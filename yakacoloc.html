@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yakacoloc — Colocation meublée proche gare de Caen</title>
+<meta name="description" content="Yakacoloc propose 5 chambres meublées en colocation à Caen, à 400 m de la gare. Idéal pour étudiants, alternants et jeunes actifs. Loyers de 340 € à 410 € charges comprises (60 €).">
+<meta name="keywords" content="colocation Caen, colocation proche gare Caen, chambre étudiant Caen, location chambre meublée Caen, colocation étudiant Caen">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blanc: #FAF9F7;
+    --beige: #F2EFE9;
+    --beige-fonce: #E8E4DE;
+    --anthracite: #2C2C2A;
+    --gris: #7A7875;
+    --sauge: #7A9E8E;
+    --sauge-clair: #EEF4F1;
+    --or: #C8A96E;
+    --radius: 4px;
+    --shadow: 0 2px 20px rgba(44,44,42,0.07);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Jost', sans-serif; background: var(--blanc); color: var(--anthracite); font-size: 16px; line-height: 1.7; font-weight: 300; }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+
+  /* TYPOGRAPHY */
+  h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; font-weight: 400; line-height: 1.15; }
+  h1 { font-size: clamp(2.8rem, 6vw, 5rem); letter-spacing: -0.01em; }
+  h2 { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.01em; }
+  h3 { font-size: 1.5rem; font-weight: 500; }
+  .eyebrow { font-family: 'Jost', sans-serif; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--sauge); font-weight: 500; display: block; margin-bottom: 1rem; }
+  p { color: var(--gris); }
+
+  /* LAYOUT */
+  .container { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+  section { padding: 100px 0; }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(250,249,247,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--beige-fonce); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500; letter-spacing: 0.04em; color: var(--anthracite); }
+  .nav-logo span { color: var(--sauge); }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 400; color: var(--gris); transition: color 0.2s; }
+  .nav-links a:hover { color: var(--anthracite); }
+  .nav-cta { background: var(--anthracite); color: var(--blanc); font-family: 'Jost', sans-serif; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 22px; border-radius: var(--radius); border: none; cursor: pointer; transition: background 0.2s; }
+  .nav-cta:hover { background: var(--sauge); }
+  .nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .nav-burger span { width: 22px; height: 1.5px; background: var(--anthracite); display: block; }
+
+  /* BUTTONS */
+  .btn { display: inline-block; font-family: 'Jost', sans-serif; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; padding: 14px 32px; border-radius: var(--radius); cursor: pointer; transition: all 0.25s; border: none; }
+  .btn-dark { background: var(--anthracite); color: var(--blanc); }
+  .btn-dark:hover { background: var(--sauge); }
+  .btn-outline { background: transparent; color: var(--anthracite); border: 1px solid var(--anthracite); }
+  .btn-outline:hover { background: var(--anthracite); color: var(--blanc); }
+  .btn-sauge { background: var(--sauge); color: #fff; }
+  .btn-sauge:hover { background: #6a8e7e; }
+
+  /* HERO */
+  #hero { padding: 0; min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; position: relative; overflow: hidden; padding-top: 64px; }
+  .hero-bg { position: absolute; inset: 0; background: linear-gradient(160deg, #F2EFE9 0%, #E8E4DE 100%); }
+  .hero-pattern { position: absolute; inset: 0; background-image: radial-gradient(circle at 70% 40%, rgba(122,158,142,0.12) 0%, transparent 55%), radial-gradient(circle at 20% 80%, rgba(200,169,110,0.08) 0%, transparent 45%); }
+  .hero-content { position: relative; z-index: 2; padding: 80px 0 100px; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: end; }
+  .hero-left { max-width: 560px; }
+  .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: var(--blanc); border: 1px solid var(--beige-fonce); padding: 6px 16px; border-radius: 100px; font-size: 0.75rem; letter-spacing: 0.06em; color: var(--gris); margin-bottom: 32px; }
+  .hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--sauge); flex-shrink: 0; }
+  .hero-title { color: var(--anthracite); margin-bottom: 20px; }
+  .hero-title em { font-style: italic; color: var(--sauge); }
+  .hero-subtitle { font-size: 1.05rem; color: var(--gris); margin-bottom: 40px; max-width: 420px; line-height: 1.8; }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+  .hero-right { display: flex; flex-direction: column; gap: 16px; }
+  .hero-photo-main { border-radius: 8px; overflow: hidden; height: 320px; background: var(--beige-fonce); position: relative; }
+  .hero-photo-main img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-photo-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #E8E4DE, #D8D4CE); }
+  .hero-photo-placeholder span { font-family: 'Cormorant Garamond', serif; font-size: 0.85rem; color: var(--gris); letter-spacing: 0.08em; text-transform: uppercase; }
+  .hero-photos-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .hero-photo-sm { border-radius: 6px; overflow: hidden; height: 160px; background: var(--beige-fonce); }
+  .hero-photo-sm img { width: 100%; height: 100%; object-fit: cover; }
+  .photo-placeholder-sm { width: 100%; height: 100%; background: linear-gradient(135deg, #DDD9D3, #CECCCA); display: flex; align-items: center; justify-content: center; }
+  .photo-placeholder-sm span { font-size: 0.7rem; color: var(--gris); letter-spacing: 0.06em; text-align: center; padding: 8px; }
+  .hero-stats { display: flex; gap: 32px; margin-top: 16px; padding-top: 32px; border-top: 1px solid var(--beige-fonce); }
+  .hero-stat-value { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 500; color: var(--anthracite); display: block; }
+  .hero-stat-label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gris); }
+
+  /* PRESENTATION */
+  #presentation { background: var(--blanc); }
+  .pres-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+  .pres-text p { margin-bottom: 20px; font-size: 1.02rem; line-height: 1.9; }
+  .pres-photo { border-radius: 8px; overflow: hidden; height: 520px; background: var(--beige); position: relative; }
+  .pres-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .pres-photo-placeholder { width: 100%; height: 100%; background: linear-gradient(145deg, #EAE6E0, #D8D4CE); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 12px; }
+  .pres-photo-placeholder span { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--gris); letter-spacing: 0.06em; }
+
+  /* ATOUTS */
+  #atouts { background: var(--beige); }
+  .atouts-title { text-align: center; margin-bottom: 64px; }
+  .atouts-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--beige-fonce); border: 1px solid var(--beige-fonce); border-radius: 8px; overflow: hidden; }
+  .atout { background: var(--blanc); padding: 32px 24px; text-align: center; transition: background 0.2s; }
+  .atout:hover { background: var(--sauge-clair); }
+  .atout-icon { width: 44px; height: 44px; border-radius: 50%; background: var(--sauge-clair); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+  .atout-icon svg { width: 20px; height: 20px; stroke: var(--sauge); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .atout-value { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 500; color: var(--anthracite); display: block; margin-bottom: 4px; }
+  .atout-label { font-size: 0.78rem; color: var(--gris); letter-spacing: 0.02em; }
+
+  /* CHAMBRES */
+  #chambres { background: var(--blanc); }
+  .chambres-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 56px; }
+  .chambres-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .chambre-card { background: var(--beige); border-radius: 8px; overflow: hidden; transition: transform 0.25s, box-shadow 0.25s; border: 1px solid var(--beige-fonce); }
+  .chambre-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .chambre-card:nth-child(4), .chambre-card:nth-child(5) { /* centrer les 2 dernières */ }
+  .chambre-photo { height: 200px; background: var(--beige-fonce); position: relative; overflow: hidden; }
+  .chambre-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .chambre-photo-ph { width: 100%; height: 100%; background: linear-gradient(135deg, #E8E4DE, #D0CCC6); display: flex; align-items: center; justify-content: center; }
+  .chambre-photo-ph span { font-size: 0.72rem; color: var(--gris); letter-spacing: 0.06em; text-transform: uppercase; }
+  .chambre-badge { position: absolute; top: 12px; right: 12px; background: var(--blanc); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; color: var(--sauge); font-weight: 500; }
+  .chambre-body { padding: 24px; }
+  .chambre-num { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sauge); margin-bottom: 6px; display: block; }
+  .chambre-nom { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--anthracite); margin-bottom: 8px; }
+  .chambre-desc { font-size: 0.85rem; color: var(--gris); margin-bottom: 16px; line-height: 1.7; }
+  .chambre-features { list-style: none; margin-bottom: 20px; display: flex; flex-direction: column; gap: 5px; }
+  .chambre-features li { font-size: 0.8rem; color: var(--gris); display: flex; align-items: center; gap: 8px; }
+  .chambre-features li::before { content: '—'; color: var(--sauge); font-size: 0.7rem; flex-shrink: 0; }
+  .chambre-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--beige-fonce); }
+  .chambre-prix { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 500; color: var(--anthracite); }
+  .chambre-prix span { font-size: 0.78rem; color: var(--gris); font-family: 'Jost', sans-serif; font-weight: 300; }
+  .btn-sm { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 18px; }
+  .chambres-last-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 780px; margin: 24px auto 0; }
+
+  /* COMMUNS */
+  #communs { background: var(--beige); }
+  .communs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .communs-photos { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .commun-photo { border-radius: 6px; overflow: hidden; background: var(--beige-fonce); }
+  .commun-photo:first-child { grid-column: 1 / -1; height: 260px; }
+  .commun-photo:not(:first-child) { height: 160px; }
+  .commun-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .commun-photo-ph { width: 100%; height: 100%; background: linear-gradient(135deg, #E0DCD6, #CCCAC6); display: flex; align-items: center; justify-content: center; }
+  .commun-photo-ph span { font-size: 0.72rem; color: var(--gris); letter-spacing: 0.06em; text-transform: uppercase; }
+  .communs-text { display: flex; flex-direction: column; gap: 28px; }
+  .commun-item h3 { font-size: 1.15rem; color: var(--anthracite); margin-bottom: 6px; }
+  .commun-item p { font-size: 0.9rem; }
+
+  /* LOCALISATION */
+  #localisation { background: var(--anthracite); color: var(--blanc); }
+  #localisation .eyebrow { color: var(--sauge); }
+  #localisation h2 { color: var(--blanc); }
+  #localisation p { color: rgba(255,255,255,0.6); }
+  .loc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .loc-map { border-radius: 8px; overflow: hidden; height: 400px; background: #3A3A38; position: relative; }
+  .loc-map iframe { width: 100%; height: 100%; border: none; filter: grayscale(30%) contrast(1.05); }
+  .loc-map-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; background: #383836; }
+  .loc-map-ph span { color: rgba(255,255,255,0.4); font-size: 0.8rem; letter-spacing: 0.06em; }
+  .loc-adresse { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 32px; padding: 20px 24px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); }
+  .loc-adresse-text { font-size: 0.95rem; color: rgba(255,255,255,0.85); line-height: 1.6; }
+  .loc-adresse-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sauge); display: block; margin-bottom: 4px; }
+  .loc-points { list-style: none; display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+  .loc-points li { display: flex; align-items: center; gap: 14px; font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+  .loc-point-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sauge); flex-shrink: 0; }
+
+  /* TARIFS */
+  #tarifs { background: var(--blanc); }
+  .tarifs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .tarif-main { padding: 48px; background: var(--beige); border-radius: 12px; border: 1px solid var(--beige-fonce); }
+  .tarif-fourchette { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 400; color: var(--anthracite); line-height: 1; margin-bottom: 8px; }
+  .tarif-fourchette small { font-size: 1.2rem; color: var(--gris); }
+  .tarif-subtitle { font-size: 0.85rem; color: var(--gris); margin-bottom: 32px; }
+  .tarif-divider { height: 1px; background: var(--beige-fonce); margin: 24px 0; }
+  .charges-bloc { background: var(--sauge-clair); border-radius: 8px; padding: 24px; border: 1px solid rgba(122,158,142,0.2); }
+  .charges-titre { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sauge); margin-bottom: 16px; font-weight: 500; }
+  .charges-liste { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .charges-liste li { font-size: 0.88rem; color: var(--anthracite); display: flex; align-items: center; gap: 10px; }
+  .charges-liste li::before { content: '✓'; color: var(--sauge); font-size: 0.8rem; flex-shrink: 0; }
+  .tarif-promesse { background: var(--anthracite); color: var(--blanc); border-radius: 8px; padding: 20px 24px; margin-top: 20px; }
+  .tarif-promesse p { color: rgba(255,255,255,0.9); font-size: 0.9rem; font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; }
+  .tarif-info { display: flex; flex-direction: column; gap: 24px; }
+  .tarif-info-card { padding: 28px; border: 1px solid var(--beige-fonce); border-radius: 8px; }
+  .tarif-info-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--anthracite); margin-bottom: 10px; }
+  .tarif-info-card p { font-size: 0.88rem; line-height: 1.8; }
+
+  /* PROFIL */
+  #profil { background: var(--beige); }
+  .profil-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .profil-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .profil-card { background: var(--blanc); border-radius: 8px; padding: 24px; border: 1px solid var(--beige-fonce); }
+  .profil-card-icon { font-size: 1.5rem; margin-bottom: 12px; }
+  .profil-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--anthracite); margin-bottom: 6px; }
+  .profil-card p { font-size: 0.82rem; line-height: 1.7; }
+  .profil-text p { margin-bottom: 20px; font-size: 1rem; line-height: 1.9; }
+  .profil-valeurs { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+  .profil-valeurs li { font-size: 0.88rem; color: var(--gris); display: flex; align-items: center; gap: 12px; }
+  .profil-valeurs li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--sauge); flex-shrink: 0; }
+
+  /* FORMULAIRE */
+  #candidature { background: var(--blanc); }
+  .form-container { max-width: 760px; margin: 0 auto; }
+  .form-intro { text-align: center; margin-bottom: 56px; }
+  .form-intro p { max-width: 500px; margin: 0 auto; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  label { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); font-weight: 500; }
+  input, select, textarea { font-family: 'Jost', sans-serif; font-size: 0.92rem; font-weight: 300; color: var(--anthracite); background: var(--beige); border: 1px solid var(--beige-fonce); border-radius: var(--radius); padding: 13px 16px; width: 100%; transition: border-color 0.2s, background 0.2s; outline: none; appearance: none; }
+  input:focus, select:focus, textarea:focus { border-color: var(--sauge); background: var(--blanc); }
+  textarea { resize: vertical; min-height: 120px; }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A7875' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; cursor: pointer; }
+  .form-submit { text-align: center; margin-top: 32px; }
+  .form-note { font-size: 0.75rem; color: var(--gris); margin-top: 12px; }
+  .form-section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--anthracite); grid-column: 1 / -1; margin-top: 16px; padding-top: 24px; border-top: 1px solid var(--beige-fonce); }
+
+  /* CONTACT */
+  #contact { background: var(--anthracite); color: var(--blanc); padding: 80px 0; text-align: center; }
+  #contact h2 { color: var(--blanc); margin-bottom: 16px; }
+  #contact p { color: rgba(255,255,255,0.6); margin-bottom: 40px; }
+  .contact-bloc { display: inline-flex; flex-direction: column; align-items: center; gap: 24px; }
+  .contact-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: rgba(255,255,255,0.9); }
+  .contact-tel { font-size: 1.8rem; font-family: 'Cormorant Garamond', serif; color: var(--blanc); letter-spacing: 0.02em; }
+  .contact-tel a { color: inherit; }
+  .contact-actions { display: flex; gap: 16px; }
+  .btn-tel { background: var(--sauge); color: #fff; }
+  .btn-tel:hover { background: #6a8e7e; }
+
+  /* FOOTER */
+  footer { background: #1E1E1C; padding: 32px 0; text-align: center; border-top: 1px solid #2C2C2A; }
+  footer p { font-size: 0.75rem; color: rgba(255,255,255,0.25); letter-spacing: 0.04em; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .atouts-grid { grid-template-columns: repeat(4, 1fr); }
+    .chambres-grid { grid-template-columns: repeat(2, 1fr); }
+    .chambres-last-row { grid-template-columns: repeat(2, 1fr); max-width: 100%; margin-top: 24px; }
+  }
+  @media (max-width: 768px) {
+    section { padding: 72px 0; }
+    .container { padding: 0 20px; }
+    .nav-links, .nav-cta { display: none; }
+    .nav-burger { display: flex; }
+    .hero-grid { grid-template-columns: 1fr; gap: 48px; }
+    .hero-photos-row, .hero-right { display: none; }
+    .pres-grid, .communs-grid, .loc-grid, .tarifs-grid, .profil-grid { grid-template-columns: 1fr; gap: 48px; }
+    .atouts-grid { grid-template-columns: repeat(2, 1fr); }
+    .chambres-grid { grid-template-columns: 1fr; }
+    .chambres-last-row { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-group.full { grid-column: 1; }
+    .profil-cards { grid-template-columns: 1fr; }
+    .chambres-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    h1 { font-size: 2.6rem; }
+  }
+
+  /* ANIMATIONS */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="container nav-inner">
+    <div class="nav-logo">Yaka<span>coloc</span></div>
+    <ul class="nav-links">
+      <li><a href="#presentation">La colocation</a></li>
+      <li><a href="#chambres">Les chambres</a></li>
+      <li><a href="#tarifs">Tarifs</a></li>
+      <li><a href="#localisation">Localisation</a></li>
+    </ul>
+    <a href="#candidature" class="nav-cta">Candidater</a>
+    <div class="nav-burger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="container hero-content">
+    <div class="hero-grid">
+      <div class="hero-left fade-in">
+        <div class="hero-tag">Colocation meublée · Caen · Proche gare</div>
+        <h1 class="hero-title">Votre chambre<br>à <em>Caen,</em><br>enfin trouvée.</h1>
+        <p class="hero-subtitle">Un duplex de 130 m² meublé, lumineux et bien équipé, à deux pas de la gare de Caen. Cinq chambres. Une ambiance sereine et conviviale.</p>
+        <div class="hero-actions">
+          <a href="#chambres" class="btn btn-dark">Voir les chambres</a>
+          <a href="#candidature" class="btn btn-outline">Candidater</a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <span class="hero-stat-value">130 m²</span>
+            <span class="hero-stat-label">Surface totale</span>
+          </div>
+          <div>
+            <span class="hero-stat-value">400 m</span>
+            <span class="hero-stat-label">De la gare</span>
+          </div>
+          <div>
+            <span class="hero-stat-value">5</span>
+            <span class="hero-stat-label">Chambres meublées</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right fade-in" style="transition-delay:0.15s">
+        <div class="hero-photo-main">
+          <!-- Remplacer par : <img src="photos/salon.jpg" alt="Salon de la colocation Yakacoloc à Caen"> -->
+          <div class="hero-photo-placeholder"><span>Photo · Salon / Pièce de vie</span></div>
+        </div>
+        <div class="hero-photos-row">
+          <div class="hero-photo-sm">
+            <!-- <img src="photos/cuisine.jpg" alt="Cuisine équipée"> -->
+            <div class="photo-placeholder-sm"><span>Cuisine équipée</span></div>
+          </div>
+          <div class="hero-photo-sm">
+            <!-- <img src="photos/chambre1.jpg" alt="Chambre meublée"> -->
+            <div class="photo-placeholder-sm"><span>Chambre meublée</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRÉSENTATION -->
+<section id="presentation">
+  <div class="container">
+    <div class="pres-grid">
+      <div class="pres-photo fade-in">
+        <!-- <img src="photos/duplex.jpg" alt="Vue intérieure du duplex Yakacoloc"> -->
+        <div class="pres-photo-placeholder">
+          <span>Photo · Vue intérieure</span>
+        </div>
+      </div>
+      <div class="pres-text fade-in" style="transition-delay:0.1s">
+        <span class="eyebrow">La colocation</span>
+        <h2 style="margin-bottom:28px;">Un appartement<br>pensé pour bien vivre.</h2>
+        <p>Yakacoloc, c'est une colocation de cinq personnes installée dans un duplex de 130 m² au cœur de Caen, à quelques minutes à pied de la gare. Un lieu spacieux, lumineux et entièrement meublé, conçu pour offrir confort et tranquillité au quotidien.</p>
+        <p>L'appartement allie des espaces communs agréables — salon généreux, cuisine pleinement équipée — et des chambres privatives soignées. Chaque chambre est meublée et aménagée pour le travail comme pour le repos.</p>
+        <p>Idéalement situé au troisième étage d'un immeuble calme de la rue d'Auge, Yakacoloc offre un accès rapide aux universités, aux lignes de bus, aux commerces et au centre-ville de Caen.</p>
+        <a href="#chambres" class="btn btn-dark" style="margin-top:8px;">Découvrir les chambres</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ATOUTS -->
+<section id="atouts">
+  <div class="container">
+    <div class="atouts-title fade-in">
+      <span class="eyebrow">Ce qui fait la différence</span>
+      <h2>Tout ce qu'il vous faut,<br>sans compromis.</h2>
+    </div>
+    <div class="atouts-grid fade-in">
+      <div class="atout">
+        <div class="atout-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+        </div>
+        <span class="atout-value">400 m</span>
+        <span class="atout-label">De la gare de Caen</span>
+      </div>
+      <div class="atout">
+        <div class="atout-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/></svg>
+        </div>
+        <span class="atout-value">130 m²</span>
+        <span class="atout-label">En duplex lumineux</span>
+      </div>
+      <div class="atout">
+        <div class="atout-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 9V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M20 9H4"/><path d="M14 15h2a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1h-2"/><rect x="8" y="13" width="6" height="5" rx="1"/></svg>
+        </div>
+        <span class="atout-value">5</span>
+        <span class="atout-label">Chambres meublées</span>
+      </div>
+      <div class="atout">
+        <div class="atout-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10z"/></svg>
+        </div>
+        <span class="atout-value">Fibre</span>
+        <span class="atout-label">Internet incluse</span>
+      </div>
+      <div class="atout">
+        <div class="atout-icon">
+          <svg viewBox="0 0 24 24"><path d="M6 2v20M18 2v20M2 12h20M2 7h4M18 7h4M2 17h4M18 17h4"/></svg>
+        </div>
+        <span class="atout-value">Cuisine</span>
+        <span class="atout-label">Pleinement équipée</span>
+      </div>
+      <div class="atout">
+        <div class="atout-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <span class="atout-value">2h</span>
+        <span class="atout-label">Ménage/mois inclus</span>
+      </div>
+      <div class="atout">
+        <div class="atout-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><line x1="12" y1="12" x2="12" y2="16"/><circle cx="12" cy="12" r="1"/></svg>
+        </div>
+        <span class="atout-value">Machine</span>
+        <span class="atout-label">À laver incluse</span>
+      </div>
+      <div class="atout">
+        <div class="atout-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 8h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/><path d="M3 8h14v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8z"/><line x1="6" y1="2" x2="6" y2="8"/><line x1="10" y1="2" x2="10" y2="8"/><line x1="14" y1="2" x2="14" y2="8"/></svg>
+        </div>
+        <span class="atout-value">Bus &amp; commerces</span>
+        <span class="atout-label">À proximité immédiate</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAMBRES -->
+<section id="chambres">
+  <div class="container">
+    <div class="chambres-header fade-in">
+      <div>
+        <span class="eyebrow">Les logements</span>
+        <h2>5 chambres,<br>choisissez la vôtre.</h2>
+      </div>
+      <p style="max-width:320px;font-size:0.9rem;">Toutes les chambres sont meublées et aménagées pour le confort du quotidien. Loyers de 340 € à 410 € + 60 € de charges.</p>
+    </div>
+    <div class="chambres-grid fade-in">
+      <!-- Chambre 1 -->
+      <div class="chambre-card">
+        <div class="chambre-photo">
+          <!-- <img src="photos/chambre1.jpg" alt="Chambre 1 - Yakacoloc Caen"> -->
+          <div class="chambre-photo-ph"><span>Chambre 1 · Photo</span></div>
+          <span class="chambre-badge">Disponible</span>
+        </div>
+        <div class="chambre-body">
+          <span class="chambre-num">Chambre 01</span>
+          <div class="chambre-nom">Chambre lumineuse</div>
+          <p class="chambre-desc">Chambre côté rue, bien éclairée, idéale pour travailler depuis chez soi.</p>
+          <ul class="chambre-features">
+            <li>Lit double (140 cm)</li>
+            <li>Bureau et chaise</li>
+            <li>Rangements / penderie</li>
+            <li>Idéal étudiant · alternant</li>
+          </ul>
+          <div class="chambre-footer">
+            <div class="chambre-prix">340 € <span>+ 60 € charges</span></div>
+            <a href="#candidature" class="btn btn-sauge btn-sm">Candidater</a>
+          </div>
+        </div>
+      </div>
+      <!-- Chambre 2 -->
+      <div class="chambre-card">
+        <div class="chambre-photo">
+          <!-- <img src="photos/chambre2.jpg" alt="Chambre 2 - Yakacoloc Caen"> -->
+          <div class="chambre-photo-ph"><span>Chambre 2 · Photo</span></div>
+          <span class="chambre-badge">Disponible</span>
+        </div>
+        <div class="chambre-body">
+          <span class="chambre-num">Chambre 02</span>
+          <div class="chambre-nom">Chambre calme</div>
+          <p class="chambre-desc">Chambre au calme, avec une belle luminosité naturelle en journée.</p>
+          <ul class="chambre-features">
+            <li>Lit double (140 cm)</li>
+            <li>Bureau et chaise</li>
+            <li>Rangements / penderie</li>
+            <li>Idéal étudiant · jeune actif</li>
+          </ul>
+          <div class="chambre-footer">
+            <div class="chambre-prix">355 € <span>+ 60 € charges</span></div>
+            <a href="#candidature" class="btn btn-sauge btn-sm">Candidater</a>
+          </div>
+        </div>
+      </div>
+      <!-- Chambre 3 -->
+      <div class="chambre-card">
+        <div class="chambre-photo">
+          <!-- <img src="photos/chambre3.jpg" alt="Chambre 3 - Yakacoloc Caen"> -->
+          <div class="chambre-photo-ph"><span>Chambre 3 · Photo</span></div>
+          <span class="chambre-badge">Disponible</span>
+        </div>
+        <div class="chambre-body">
+          <span class="chambre-num">Chambre 03</span>
+          <div class="chambre-nom">Chambre spacieuse</div>
+          <p class="chambre-desc">Plus grande surface, espace de vie agréable pour un long séjour.</p>
+          <ul class="chambre-features">
+            <li>Lit double (140 cm)</li>
+            <li>Bureau et chaise</li>
+            <li>Rangements / penderie</li>
+            <li>Idéal alternant · jeune actif</li>
+          </ul>
+          <div class="chambre-footer">
+            <div class="chambre-prix">375 € <span>+ 60 € charges</span></div>
+            <a href="#candidature" class="btn btn-sauge btn-sm">Candidater</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chambres-last-row fade-in">
+      <!-- Chambre 4 -->
+      <div class="chambre-card">
+        <div class="chambre-photo">
+          <div class="chambre-photo-ph"><span>Chambre 4 · Photo</span></div>
+          <span class="chambre-badge">Disponible</span>
+        </div>
+        <div class="chambre-body">
+          <span class="chambre-num">Chambre 04</span>
+          <div class="chambre-nom">Chambre en hauteur</div>
+          <p class="chambre-desc">Située en duplex, avec une perspective dégagée et une atmosphère apaisante.</p>
+          <ul class="chambre-features">
+            <li>Lit double (140 cm)</li>
+            <li>Bureau et chaise</li>
+            <li>Rangements / penderie</li>
+            <li>Idéal étudiant · alternant</li>
+          </ul>
+          <div class="chambre-footer">
+            <div class="chambre-prix">390 € <span>+ 60 € charges</span></div>
+            <a href="#candidature" class="btn btn-sauge btn-sm">Candidater</a>
+          </div>
+        </div>
+      </div>
+      <!-- Chambre 5 -->
+      <div class="chambre-card">
+        <div class="chambre-photo">
+          <div class="chambre-photo-ph"><span>Chambre 5 · Photo</span></div>
+          <span class="chambre-badge">Disponible</span>
+        </div>
+        <div class="chambre-body">
+          <span class="chambre-num">Chambre 05</span>
+          <div class="chambre-nom">Chambre premium</div>
+          <p class="chambre-desc">La plus grande chambre, dotée d'un espace confortable et d'une belle superficie.</p>
+          <ul class="chambre-features">
+            <li>Lit double (140 cm)</li>
+            <li>Bureau et chaise</li>
+            <li>Rangements / penderie</li>
+            <li>Idéal jeune actif · salarié</li>
+          </ul>
+          <div class="chambre-footer">
+            <div class="chambre-prix">410 € <span>+ 60 € charges</span></div>
+            <a href="#candidature" class="btn btn-sauge btn-sm">Candidater</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ESPACES COMMUNS -->
+<section id="communs">
+  <div class="container">
+    <div class="communs-grid">
+      <div class="communs-photos fade-in">
+        <div class="commun-photo">
+          <!-- <img src="photos/salon.jpg" alt="Salon commun Yakacoloc"> -->
+          <div class="commun-photo-ph"><span>Photo · Salon</span></div>
+        </div>
+        <div class="commun-photo">
+          <!-- <img src="photos/cuisine2.jpg" alt="Cuisine Yakacoloc"> -->
+          <div class="commun-photo-ph"><span>Photo · Cuisine</span></div>
+        </div>
+        <div class="commun-photo">
+          <!-- <img src="photos/espace_commun.jpg" alt="Espaces communs"> -->
+          <div class="commun-photo-ph"><span>Photo · Espace commun</span></div>
+        </div>
+      </div>
+      <div class="communs-text fade-in" style="transition-delay:0.1s">
+        <span class="eyebrow">La vie commune</span>
+        <h2 style="margin-bottom:8px;">Des espaces partagés<br>avec soin.</h2>
+        <p style="margin-bottom:32px;">Les parties communes sont conçues pour être des lieux de vie agréables où chacun se sent bien, sans empiéter sur l'intimité des autres.</p>
+        <div class="commun-item">
+          <h3>Le salon</h3>
+          <p>Spacieux et lumineux, c'est le cœur de l'appartement. Un espace pour se détendre, lire, ou partager un moment convivial après une journée chargée.</p>
+        </div>
+        <div class="commun-item">
+          <h3>La cuisine</h3>
+          <p>Entièrement équipée : plaques induction, four, grand réfrigérateur-congélateur, machine à laver. Fonctionnelle et bien organisée pour cinq personnes.</p>
+        </div>
+        <div class="commun-item">
+          <h3>L'ambiance</h3>
+          <p>Conviviale et respectueuse. Yakacoloc, c'est une colocation où l'on vit bien ensemble, sans contrainte excessive, avec le sens du partage et du respect mutuel.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCALISATION -->
+<section id="localisation">
+  <div class="container">
+    <div class="loc-grid">
+      <div class="loc-text fade-in">
+        <span class="eyebrow">Localisation</span>
+        <h2 style="margin-bottom:24px;">Au cœur de Caen,<br>à deux pas de tout.</h2>
+        <div class="loc-adresse">
+          <div>
+            <span class="loc-adresse-label">Adresse</span>
+            <p class="loc-adresse-text">63 rue d'Auge<br>14000 Caen · 3e étage</p>
+          </div>
+        </div>
+        <ul class="loc-points">
+          <li><span class="loc-point-dot"></span>Gare de Caen — environ 400 m à pied</li>
+          <li><span class="loc-point-dot"></span>Lignes de bus — arrêts à proximité immédiate</li>
+          <li><span class="loc-point-dot"></span>Centre-ville — 5 à 10 minutes à pied</li>
+          <li><span class="loc-point-dot"></span>Centre commercial Les Rives de l'Orne</li>
+          <li><span class="loc-point-dot"></span>Commerces, restaurants, cinéma</li>
+          <li><span class="loc-point-dot"></span>Campus et grandes écoles accessibles facilement</li>
+        </ul>
+        <p style="font-style:italic;font-size:0.9rem;color:rgba(255,255,255,0.5);">Tous vos déplacements du quotidien, résolus en quelques minutes.</p>
+      </div>
+      <div class="loc-map fade-in" style="transition-delay:0.1s">
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=-0.3700,49.1800,-0.3500,49.1920&layer=mapnik&marker=49.1857,-0.3601"
+          allowfullscreen
+          loading="lazy"
+          title="Localisation Yakacoloc, 63 rue d'Auge, Caen">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TARIFS -->
+<section id="tarifs">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:64px;" class="fade-in">
+      <span class="eyebrow">Tarifs & charges</span>
+      <h2>Clair, complet,<br>sans mauvaise surprise.</h2>
+    </div>
+    <div class="tarifs-grid fade-in">
+      <div class="tarif-main">
+        <p class="tarif-subtitle">Loyer mensuel selon la chambre</p>
+        <div class="tarif-fourchette">340 € <small>à</small> 410 €</div>
+        <div class="tarif-divider"></div>
+        <div class="charges-bloc">
+          <p class="charges-titre">Charges forfaitaires — 60 €/mois</p>
+          <ul class="charges-liste">
+            <li>Eau</li>
+            <li>Électricité</li>
+            <li>Fibre internet</li>
+            <li>Femme de ménage (2h par mois)</li>
+          </ul>
+        </div>
+        <div class="tarif-promesse">
+          <p>« Au-delà de cela, vous n'avez rien d'autre à régler. »</p>
+        </div>
+      </div>
+      <div class="tarif-info">
+        <div class="tarif-info-card">
+          <h3>Un loyer tout inclus</h3>
+          <p>Le montant des charges est fixe et forfaitaire. Pas de régularisation de fin d'année, pas de surprise sur la facture d'électricité. Vous savez exactement ce que vous payez chaque mois.</p>
+        </div>
+        <div class="tarif-info-card">
+          <h3>Contrat de colocation</h3>
+          <p>Chaque colocataire dispose de son propre contrat de location. La colocation est meublée, conforme à la législation en vigueur. Bail étudiant ou mobilité disponible selon votre situation.</p>
+        </div>
+        <div class="tarif-info-card">
+          <h3>Garant &amp; dossier</h3>
+          <p>Un garant est apprécié pour les étudiants et alternants. Nous privilégions des dossiers solides et des candidatures sérieuses. Le processus est simple et rapide.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFIL RECHERCHÉ -->
+<section id="profil">
+  <div class="container">
+    <div class="profil-grid">
+      <div class="profil-text fade-in">
+        <span class="eyebrow">Profil recherché</span>
+        <h2 style="margin-bottom:24px;">Une colocation<br>pour les bons profils.</h2>
+        <p>Yakacoloc s'adresse à des personnes sérieuses, respectueuses et autonomes, en études ou en début de vie professionnelle. L'objectif est de composer une colocation agréable pour tout le monde.</p>
+        <p>Nous ne cherchons pas la perfection, mais la bienveillance. Des personnes qui respectent les espaces communs, honorent leurs engagements et contribuent à une ambiance positive.</p>
+        <ul class="profil-valeurs">
+          <li>Respect des espaces et des colocataires</li>
+          <li>Sérieux dans la gestion du logement</li>
+          <li>Autonomie et ponctualité dans les paiements</li>
+          <li>Envie de vivre dans un cadre agréable</li>
+        </ul>
+      </div>
+      <div class="profil-cards fade-in" style="transition-delay:0.1s">
+        <div class="profil-card">
+          <div class="profil-card-icon">🎓</div>
+          <h4>Étudiant(e)</h4>
+          <p>En université, école ou formation. Logement idéalement situé pour accéder aux campus caennais.</p>
+        </div>
+        <div class="profil-card">
+          <div class="profil-card-icon">💼</div>
+          <h4>Alternant(e)</h4>
+          <p>En contrat d'apprentissage ou de professionnalisation. Proche gare pour des déplacements facilités.</p>
+        </div>
+        <div class="profil-card">
+          <div class="profil-card-icon">🌱</div>
+          <h4>Jeune actif(ve)</h4>
+          <p>En début de carrière, souhaitant un logement de qualité dans un cadre convivial et bien situé.</p>
+        </div>
+        <div class="profil-card">
+          <div class="profil-card-icon">🤝</div>
+          <h4>Personne sérieuse</h4>
+          <p>Quel que soit votre statut, ce qui compte avant tout, c'est votre respect des autres et des lieux.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULAIRE DE CANDIDATURE -->
+<section id="candidature" style="background:var(--beige);">
+  <div class="container">
+    <div class="form-container">
+      <div class="form-intro fade-in">
+        <span class="eyebrow">Formulaire de candidature</span>
+        <h2 style="margin-bottom:16px;">Postulez en quelques minutes.</h2>
+        <p>Remplissez ce formulaire avec soin. Votre candidature sera étudiée rapidement et vous serez recontacté(e) par Armelle dans les meilleurs délais.</p>
+      </div>
+      <form id="formCandidature" class="form-grid fade-in" action="#" method="POST" data-form="yakacoloc-candidature">
+        <!-- Identité -->
+        <p class="form-section-title">Vos informations personnelles</p>
+        <div class="form-group">
+          <label for="prenom">Prénom *</label>
+          <input type="text" id="prenom" name="prenom" placeholder="Votre prénom" required>
+        </div>
+        <div class="form-group">
+          <label for="nom">Nom *</label>
+          <input type="text" id="nom" name="nom" placeholder="Votre nom" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input type="email" id="email" name="email" placeholder="votre@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="telephone">Téléphone *</label>
+          <input type="tel" id="telephone" name="telephone" placeholder="06 XX XX XX XX" required>
+        </div>
+        <!-- Situation -->
+        <p class="form-section-title">Votre situation</p>
+        <div class="form-group">
+          <label for="statut">Statut *</label>
+          <select id="statut" name="statut" required>
+            <option value="" disabled selected>Choisissez votre statut</option>
+            <option value="etudiant">Étudiant(e)</option>
+            <option value="alternant">Alternant(e)</option>
+            <option value="jeune_actif">Jeune actif(ve)</option>
+            <option value="salarie">Salarié(e)</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="ecole_entreprise">École ou entreprise</label>
+          <input type="text" id="ecole_entreprise" name="ecole_entreprise" placeholder="Nom de votre école ou employeur">
+        </div>
+        <div class="form-group">
+          <label for="revenus">Revenus mensuels (€)</label>
+          <input type="text" id="revenus" name="revenus" placeholder="Ex : 800 €, bourse + alternance...">
+        </div>
+        <div class="form-group">
+          <label for="garant">Avez-vous un garant ? *</label>
+          <select id="garant" name="garant" required>
+            <option value="" disabled selected>Sélectionner</option>
+            <option value="oui">Oui</option>
+            <option value="non">Non</option>
+            <option value="garant_physique">Oui — garant physique</option>
+            <option value="garant_organisme">Oui — organisme (Visale, etc.)</option>
+          </select>
+        </div>
+        <!-- Logement -->
+        <p class="form-section-title">Votre projet de logement</p>
+        <div class="form-group">
+          <label for="date_entree">Date d'entrée souhaitée *</label>
+          <input type="date" id="date_entree" name="date_entree" required>
+        </div>
+        <div class="form-group">
+          <label for="duree">Durée souhaitée</label>
+          <select id="duree" name="duree">
+            <option value="" disabled selected>Sélectionner</option>
+            <option value="3_mois">3 mois</option>
+            <option value="6_mois">6 mois</option>
+            <option value="1_an">1 an</option>
+            <option value="plus">Plus d'un an</option>
+            <option value="indetermine">Non déterminée</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="message">Message libre</label>
+          <textarea id="message" name="message" placeholder="Présentez-vous en quelques lignes, parlez de votre situation, de vos attentes..."></textarea>
+        </div>
+        <div class="form-submit full">
+          <button type="submit" class="btn btn-dark" style="padding:16px 48px;font-size:0.82rem;">Envoyer ma candidature</button>
+          <p class="form-note">Vos données sont utilisées uniquement dans le cadre de cette candidature.<br>Vous serez recontacté(e) par Armelle Letinturier.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <span class="eyebrow" style="text-align:center;display:block;margin-bottom:16px;">Contact</span>
+    <h2>Une question ?<br>Contactez Armelle directement.</h2>
+    <p style="margin:16px auto 40px;max-width:440px;">Pour toute question sur la colocation, les chambres disponibles ou le processus de candidature, n'hésitez pas à appeler.</p>
+    <div class="contact-bloc">
+      <span class="contact-name">Armelle Letinturier — Yakacoloc</span>
+      <div class="contact-tel"><a href="tel:+33662304269">06 62 30 42 69</a></div>
+      <div class="contact-actions">
+        <a href="tel:+33662304269" class="btn btn-tel">Appeler maintenant</a>
+        <a href="#candidature" class="btn btn-outline" style="border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);">Candidater en ligne</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>© 2026 Yakacoloc · 63 rue d'Auge, 14000 Caen · Colocation meublée proche gare de Caen</p>
+  </div>
+</footer>
+
+<script>
+  // Intersection Observer pour les animations
+  const fadeEls = document.querySelectorAll('.fade-in');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(el => observer.observe(el));
+
+  // Hero visible dès le départ
+  document.querySelectorAll('#hero .fade-in').forEach((el, i) => {
+    setTimeout(() => el.classList.add('visible'), 100 + i * 150);
+  });
+
+  // Menu mobile (structure simple)
+  function toggleMenu() {
+    const links = document.querySelector('.nav-links');
+    const cta = document.querySelector('.nav-cta');
+    const isOpen = links.style.display === 'flex';
+    if (isOpen) {
+      links.style.display = '';
+      cta.style.display = '';
+    } else {
+      links.style.display = 'flex';
+      links.style.flexDirection = 'column';
+      links.style.position = 'absolute';
+      links.style.top = '64px';
+      links.style.left = '0';
+      links.style.right = '0';
+      links.style.background = 'var(--blanc)';
+      links.style.padding = '20px 32px';
+      links.style.borderBottom = '1px solid var(--beige-fonce)';
+      links.style.gap = '16px';
+      cta.style.display = 'block';
+      cta.style.position = 'absolute';
+      cta.style.top = '160px';
+      cta.style.left = '32px';
+    }
+  }
+
+  // Formulaire — prêt pour connexion future (Tally, n8n, Google Sheets...)
+  document.getElementById('formCandidature').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+    // Pour connecter à n8n / Make / Google Sheets, remplacer l'URL ci-dessous :
+    // fetch('https://votre-webhook.n8n.cloud/webhook/yakacoloc', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(data)
+    // });
+    console.log('Candidature soumise :', data);
+    const btn = this.querySelector('button[type=submit]');
+    btn.textContent = '✓ Candidature envoyée — Merci !';
+    btn.style.background = 'var(--sauge)';
+    btn.disabled = true;
+    this.querySelectorAll('input,select,textarea').forEach(el => el.disabled = true);
+  });
+</script>
+</body>
+</html>
