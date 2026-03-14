@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Yakacoloc — Colocation meublée proche gare de Caen</title>
-<meta name="description" content="Yakacoloc propose 5 chambres meublées en colocation à Caen, à 400 m de la gare. Idéal pour étudiants, alternants et jeunes actifs. Loyers de 340 € à 410 € charges comprises (60 €).">
+<meta name="description" content="Yakacoloc propose 5 chambres meublées en colocation à Caen, à 400 m de la gare. Loyers de 340 € à 410 € charges comprises (60 €). Charges incluses : eau, électricité, fibre internet.">
 <meta name="keywords" content="colocation Caen, colocation proche gare Caen, chambre étudiant Caen, location chambre meublée Caen, colocation étudiant Caen">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -121,6 +121,8 @@
   .chambre-photo-ph { width: 100%; height: 100%; background: linear-gradient(135deg, #E8E4DE, #D0CCC6); display: flex; align-items: center; justify-content: center; }
   .chambre-photo-ph span { font-size: 0.72rem; color: var(--gris); letter-spacing: 0.06em; text-transform: uppercase; }
   .chambre-badge { position: absolute; top: 12px; right: 12px; background: var(--blanc); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; color: var(--sauge); font-weight: 500; }
+  .chambre-badge-occup { background: #2C2C2A; color: rgba(255,255,255,0.7); }
+  .candidature-fermee { font-size: 0.72rem; color: var(--gris); font-style: italic; }
   .chambre-body { padding: 24px; }
   .chambre-num { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sauge); margin-bottom: 6px; display: block; }
   .chambre-nom { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--anthracite); margin-bottom: 8px; }
@@ -395,13 +397,6 @@
       </div>
       <div class="atout">
         <div class="atout-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg>
-        </div>
-        <span class="atout-value">2h</span>
-        <span class="atout-label">Ménage/mois inclus</span>
-      </div>
-      <div class="atout">
-        <div class="atout-icon">
           <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><line x1="12" y1="12" x2="12" y2="16"/><circle cx="12" cy="12" r="1"/></svg>
         </div>
         <span class="atout-value">Machine</span>
@@ -413,6 +408,13 @@
         </div>
         <span class="atout-value">Bus &amp; commerces</span>
         <span class="atout-label">À proximité immédiate</span>
+      </div>
+      <div class="atout">
+        <div class="atout-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <span class="atout-value">Charges</span>
+        <span class="atout-label">Tout inclus, fixe</span>
       </div>
     </div>
   </div>
@@ -428,122 +430,9 @@
       </div>
       <p style="max-width:320px;font-size:0.9rem;">Toutes les chambres sont meublées et aménagées pour le confort du quotidien. Loyers de 340 € à 410 € + 60 € de charges.</p>
     </div>
-    <div class="chambres-grid fade-in">
-      <!-- Chambre 1 -->
-      <div class="chambre-card">
-        <div class="chambre-photo">
-          <!-- <img src="photos/chambre1.jpg" alt="Chambre 1 - Yakacoloc Caen"> -->
-          <div class="chambre-photo-ph"><span>Chambre 1 · Photo</span></div>
-          <span class="chambre-badge">Disponible</span>
-        </div>
-        <div class="chambre-body">
-          <span class="chambre-num">Chambre 01</span>
-          <div class="chambre-nom">Chambre lumineuse</div>
-          <p class="chambre-desc">Chambre côté rue, bien éclairée, idéale pour travailler depuis chez soi.</p>
-          <ul class="chambre-features">
-            <li>Lit double (140 cm)</li>
-            <li>Bureau et chaise</li>
-            <li>Rangements / penderie</li>
-            <li>Idéal étudiant · alternant</li>
-          </ul>
-          <div class="chambre-footer">
-            <div class="chambre-prix">340 € <span>+ 60 € charges</span></div>
-            <a href="#candidature" class="btn btn-sauge btn-sm">Candidater</a>
-          </div>
-        </div>
-      </div>
-      <!-- Chambre 2 -->
-      <div class="chambre-card">
-        <div class="chambre-photo">
-          <!-- <img src="photos/chambre2.jpg" alt="Chambre 2 - Yakacoloc Caen"> -->
-          <div class="chambre-photo-ph"><span>Chambre 2 · Photo</span></div>
-          <span class="chambre-badge">Disponible</span>
-        </div>
-        <div class="chambre-body">
-          <span class="chambre-num">Chambre 02</span>
-          <div class="chambre-nom">Chambre calme</div>
-          <p class="chambre-desc">Chambre au calme, avec une belle luminosité naturelle en journée.</p>
-          <ul class="chambre-features">
-            <li>Lit double (140 cm)</li>
-            <li>Bureau et chaise</li>
-            <li>Rangements / penderie</li>
-            <li>Idéal étudiant · jeune actif</li>
-          </ul>
-          <div class="chambre-footer">
-            <div class="chambre-prix">355 € <span>+ 60 € charges</span></div>
-            <a href="#candidature" class="btn btn-sauge btn-sm">Candidater</a>
-          </div>
-        </div>
-      </div>
-      <!-- Chambre 3 -->
-      <div class="chambre-card">
-        <div class="chambre-photo">
-          <!-- <img src="photos/chambre3.jpg" alt="Chambre 3 - Yakacoloc Caen"> -->
-          <div class="chambre-photo-ph"><span>Chambre 3 · Photo</span></div>
-          <span class="chambre-badge">Disponible</span>
-        </div>
-        <div class="chambre-body">
-          <span class="chambre-num">Chambre 03</span>
-          <div class="chambre-nom">Chambre spacieuse</div>
-          <p class="chambre-desc">Plus grande surface, espace de vie agréable pour un long séjour.</p>
-          <ul class="chambre-features">
-            <li>Lit double (140 cm)</li>
-            <li>Bureau et chaise</li>
-            <li>Rangements / penderie</li>
-            <li>Idéal alternant · jeune actif</li>
-          </ul>
-          <div class="chambre-footer">
-            <div class="chambre-prix">375 € <span>+ 60 € charges</span></div>
-            <a href="#candidature" class="btn btn-sauge btn-sm">Candidater</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="chambres-last-row fade-in">
-      <!-- Chambre 4 -->
-      <div class="chambre-card">
-        <div class="chambre-photo">
-          <div class="chambre-photo-ph"><span>Chambre 4 · Photo</span></div>
-          <span class="chambre-badge">Disponible</span>
-        </div>
-        <div class="chambre-body">
-          <span class="chambre-num">Chambre 04</span>
-          <div class="chambre-nom">Chambre en hauteur</div>
-          <p class="chambre-desc">Située en duplex, avec une perspective dégagée et une atmosphère apaisante.</p>
-          <ul class="chambre-features">
-            <li>Lit double (140 cm)</li>
-            <li>Bureau et chaise</li>
-            <li>Rangements / penderie</li>
-            <li>Idéal étudiant · alternant</li>
-          </ul>
-          <div class="chambre-footer">
-            <div class="chambre-prix">390 € <span>+ 60 € charges</span></div>
-            <a href="#candidature" class="btn btn-sauge btn-sm">Candidater</a>
-          </div>
-        </div>
-      </div>
-      <!-- Chambre 5 -->
-      <div class="chambre-card">
-        <div class="chambre-photo">
-          <div class="chambre-photo-ph"><span>Chambre 5 · Photo</span></div>
-          <span class="chambre-badge">Disponible</span>
-        </div>
-        <div class="chambre-body">
-          <span class="chambre-num">Chambre 05</span>
-          <div class="chambre-nom">Chambre premium</div>
-          <p class="chambre-desc">La plus grande chambre, dotée d'un espace confortable et d'une belle superficie.</p>
-          <ul class="chambre-features">
-            <li>Lit double (140 cm)</li>
-            <li>Bureau et chaise</li>
-            <li>Rangements / penderie</li>
-            <li>Idéal jeune actif · salarié</li>
-          </ul>
-          <div class="chambre-footer">
-            <div class="chambre-prix">410 € <span>+ 60 € charges</span></div>
-            <a href="#candidature" class="btn btn-sauge btn-sm">Candidater</a>
-          </div>
-        </div>
-      </div>
+    <!-- Les chambres sont chargées dynamiquement via JavaScript (chambres.json) -->
+    <div id="chambres-container">
+      <div id="chambres-loading" style="text-align:center;padding:48px 0;color:var(--gris);font-size:0.9rem;letter-spacing:0.06em;">Chargement des chambres…</div>
     </div>
   </div>
 </section>
@@ -640,7 +529,6 @@
             <li>Eau</li>
             <li>Électricité</li>
             <li>Fibre internet</li>
-            <li>Femme de ménage (2h par mois)</li>
           </ul>
         </div>
         <div class="tarif-promesse">
@@ -821,24 +709,29 @@
 </footer>
 
 <script>
-  // Intersection Observer pour les animations
-  const fadeEls = document.querySelectorAll('.fade-in');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  fadeEls.forEach(el => observer.observe(el));
+  // ============================================================
+  // ANIMATIONS (Intersection Observer)
+  // ============================================================
+  function initObserver() {
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    fadeEls.forEach(el => observer.observe(el));
+  }
 
-  // Hero visible dès le départ
   document.querySelectorAll('#hero .fade-in').forEach((el, i) => {
     setTimeout(() => el.classList.add('visible'), 100 + i * 150);
   });
 
-  // Menu mobile (structure simple)
+  // ============================================================
+  // MENU MOBILE
+  // ============================================================
   function toggleMenu() {
     const links = document.querySelector('.nav-links');
     const cta = document.querySelector('.nav-cta');
@@ -864,17 +757,183 @@
     }
   }
 
-  // Formulaire — prêt pour connexion future (Tally, n8n, Google Sheets...)
+  // ============================================================
+  // CHARGEMENT DYNAMIQUE DES CHAMBRES
+  // Source : fichier chambres.json (ou URL Google Sheets CSV)
+  //
+  // Pour utiliser Google Sheets :
+  // 1. Créez un Google Sheet avec les colonnes définies ci-dessous
+  // 2. Fichier > Partager > Publier sur le web > Format CSV
+  // 3. Copiez l'URL et remplacez DATA_URL ci-dessous
+  // 4. Changez DATA_FORMAT en 'csv'
+  //
+  // Pour utiliser un fichier JSON local :
+  // 1. Éditez chambres.json dans le même dossier que index.html
+  // 2. DATA_URL = 'chambres.json' et DATA_FORMAT = 'json'
+  // ============================================================
+
+  const DATA_URL = 'chambres.json';
+  const DATA_FORMAT = 'json'; // 'json' ou 'csv'
+
+  // Colonnes attendues : Chambre, Surface_m2, Loyer, Charges, Disponible, Candidature_ouverte, Description, Photo
+
+  function parseCSV(text) {
+    const lines = text.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+    return lines.slice(1).map(line => {
+      const values = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = values[i] || '');
+      return obj;
+    });
+  }
+
+  function buildChambreCard(c, index) {
+    const numero = String(index + 1).padStart(2, '0');
+    const disponible = (c.Disponible || '').toLowerCase() === 'oui';
+    const candidatureOuverte = (c.Candidature_ouverte || '').toLowerCase() === 'oui';
+    const photo = c.Photo ? `photos/${c.Photo}` : '';
+    const surfaceLabel = c.Surface_m2 ? `${c.Surface_m2} m²` : '';
+
+    const badgeHtml = disponible
+      ? `<span class="chambre-badge chambre-badge-dispo">Disponible</span>`
+      : `<span class="chambre-badge chambre-badge-occup">Occupée</span>`;
+
+    const photoHtml = photo
+      ? `<img src="${photo}" alt="${c.Chambre} - Yakacoloc Caen" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+         <div class="chambre-photo-ph" style="display:none"><span>${c.Chambre} · Photo</span></div>`
+      : `<div class="chambre-photo-ph"><span>${c.Chambre} · Photo</span></div>`;
+
+    const actionHtml = candidatureOuverte
+      ? `<button class="btn btn-sauge btn-sm btn-candidater" data-chambre="${c.Chambre}">Candidater</button>`
+      : `<span class="candidature-fermee">Candidatures fermées</span>`;
+
+    const surfaceHtml = surfaceLabel
+      ? `<li>${surfaceLabel} — ${c.Description || ''}</li>`
+      : `<li>${c.Description || ''}</li>`;
+
+    return `
+      <div class="chambre-card">
+        <div class="chambre-photo">
+          ${photoHtml}
+          ${badgeHtml}
+        </div>
+        <div class="chambre-body">
+          <span class="chambre-num">Chambre ${numero}</span>
+          <div class="chambre-nom">${c.Chambre}</div>
+          <p class="chambre-desc">${c.Description || ''}</p>
+          <ul class="chambre-features">
+            ${surfaceLabel ? `<li>${surfaceLabel}</li>` : ''}
+            <li>Lit double (140 cm)</li>
+            <li>Bureau et chaise</li>
+            <li>Rangements / penderie</li>
+          </ul>
+          <div class="chambre-footer">
+            <div class="chambre-prix">${c.Loyer || '—'} € <span>+ ${c.Charges || '60'} € charges</span></div>
+            ${actionHtml}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderChambres(chambres) {
+    const container = document.getElementById('chambres-container');
+    if (!chambres || chambres.length === 0) {
+      container.innerHTML = '<p style="text-align:center;color:var(--gris);">Aucune chambre disponible pour le moment.</p>';
+      return;
+    }
+
+    const trois = chambres.slice(0, 3);
+    const reste = chambres.slice(3);
+
+    let html = `<div class="chambres-grid fade-in">`;
+    trois.forEach((c, i) => { html += buildChambreCard(c, i); });
+    html += `</div>`;
+
+    if (reste.length > 0) {
+      html += `<div class="chambres-last-row fade-in">`;
+      reste.forEach((c, i) => { html += buildChambreCard(c, i + 3); });
+      html += `</div>`;
+    }
+
+    container.innerHTML = html;
+
+    // Boutons Candidater → pré-remplir le formulaire
+    container.querySelectorAll('.btn-candidater').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const chambre = this.getAttribute('data-chambre');
+        const selectChambre = document.getElementById('chambre_souhaitee');
+        if (selectChambre) {
+          // Mettre à jour le select si le champ existe
+          for (let opt of selectChambre.options) {
+            if (opt.value === chambre || opt.text === chambre) {
+              selectChambre.value = opt.value;
+              break;
+            }
+          }
+        }
+        // Mémoriser la chambre sélectionnée pour l'envoi
+        window.chambreSelectionnee = chambre;
+        // Scroll vers le formulaire
+        document.getElementById('candidature').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Relancer les animations
+    initObserver();
+    container.querySelectorAll('.fade-in').forEach((el, i) => {
+      setTimeout(() => el.classList.add('visible'), 100 + i * 80);
+    });
+  }
+
+  async function loadChambres() {
+    try {
+      const res = await fetch(DATA_URL);
+      if (!res.ok) throw new Error('Fichier introuvable');
+      let chambres;
+      if (DATA_FORMAT === 'csv') {
+        const text = await res.text();
+        chambres = parseCSV(text);
+      } else {
+        chambres = await res.json();
+      }
+      renderChambres(chambres);
+    } catch (err) {
+      console.warn('Chargement JSON échoué, affichage des données par défaut.', err);
+      // Données de secours intégrées — modifiez-les ici si le fichier JSON est absent
+      renderChambres([
+        { Chambre: "Chambre 1", Surface_m2: "10", Loyer: "340", Charges: "60", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre lumineuse, idéale pour le télétravail", Photo: "chambre1.jpg" },
+        { Chambre: "Chambre 2", Surface_m2: "12", Loyer: "355", Charges: "60", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre calme, belle luminosité naturelle", Photo: "chambre2.jpg" },
+        { Chambre: "Chambre 3", Surface_m2: "14", Loyer: "375", Charges: "60", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre spacieuse, espace de vie confortable", Photo: "chambre3.jpg" },
+        { Chambre: "Chambre 4", Surface_m2: "16", Loyer: "390", Charges: "60", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre en duplex, perspective dégagée et apaisante", Photo: "chambre4.jpg" },
+        { Chambre: "Chambre 5", Surface_m2: "20", Loyer: "410", Charges: "60", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre premium avec salle de bain privative", Photo: "chambre5.jpg" }
+      ]);
+    }
+  }
+
+  // ============================================================
+  // FORMULAIRE DE CANDIDATURE
+  // Pour connecter à n8n / Make / Google Sheets :
+  // Décommentez le fetch() ci-dessous et remplacez l'URL webhook
+  // ============================================================
   document.getElementById('formCandidature').addEventListener('submit', function(e) {
     e.preventDefault();
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
-    // Pour connecter à n8n / Make / Google Sheets, remplacer l'URL ci-dessous :
+
+    // Ajouter la chambre sélectionnée depuis le clic "Candidater"
+    if (window.chambreSelectionnee && !data.chambre_souhaitee) {
+      data.chambre_souhaitee = window.chambreSelectionnee;
+    }
+
+    // ---- Décommentez pour activer l'envoi vers votre webhook ----
     // fetch('https://votre-webhook.n8n.cloud/webhook/yakacoloc', {
     //   method: 'POST',
     //   headers: { 'Content-Type': 'application/json' },
     //   body: JSON.stringify(data)
     // });
+    // -------------------------------------------------------------
+
     console.log('Candidature soumise :', data);
     const btn = this.querySelector('button[type=submit]');
     btn.textContent = '✓ Candidature envoyée — Merci !';
@@ -882,6 +941,10 @@
     btn.disabled = true;
     this.querySelectorAll('input,select,textarea').forEach(el => el.disabled = true);
   });
+
+  // Lancement
+  initObserver();
+  loadChambres();
 </script>
 </body>
 </html>
