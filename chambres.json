@@ -4,8 +4,8 @@
     "Surface_m2": "10",
     "Loyer": "340",
     "Charges": "60",
-    "Disponible": "oui",
-    "Candidature_ouverte": "oui",
+    "Disponible": "non",
+    "Candidature_ouverte": "non",
     "Description": "Chambre lumineuse, idéale pour le télétravail",
     "Photo": "chambre1.jpg"
   },
