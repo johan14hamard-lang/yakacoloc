@@ -1,0 +1,52 @@
+[
+  {
+    "Chambre": "Chambre 1",
+    "Surface_m2": "10",
+    "Loyer": "340",
+    "Charges": "60",
+    "Disponible": "oui",
+    "Candidature_ouverte": "oui",
+    "Description": "Chambre lumineuse, idéale pour le télétravail",
+    "Photo": "chambre1.jpg"
+  },
+  {
+    "Chambre": "Chambre 2",
+    "Surface_m2": "12",
+    "Loyer": "355",
+    "Charges": "60",
+    "Disponible": "oui",
+    "Candidature_ouverte": "oui",
+    "Description": "Chambre calme, belle luminosité naturelle",
+    "Photo": "chambre2.jpg"
+  },
+  {
+    "Chambre": "Chambre 3",
+    "Surface_m2": "14",
+    "Loyer": "375",
+    "Charges": "60",
+    "Disponible": "oui",
+    "Candidature_ouverte": "oui",
+    "Description": "Chambre spacieuse, espace de vie confortable",
+    "Photo": "chambre3.jpg"
+  },
+  {
+    "Chambre": "Chambre 4",
+    "Surface_m2": "16",
+    "Loyer": "390",
+    "Charges": "60",
+    "Disponible": "oui",
+    "Candidature_ouverte": "oui",
+    "Description": "Chambre en duplex, perspective dégagée et apaisante",
+    "Photo": "chambre4.jpg"
+  },
+  {
+    "Chambre": "Chambre 5",
+    "Surface_m2": "20",
+    "Loyer": "410",
+    "Charges": "60",
+    "Disponible": "oui",
+    "Candidature_ouverte": "oui",
+    "Description": "Chambre premium avec salle de bain privative",
+    "Photo": "chambre5.jpg"
+  }
+]
