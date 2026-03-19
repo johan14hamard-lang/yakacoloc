@@ -656,6 +656,17 @@
         <!-- Logement -->
         <p class="form-section-title">Votre projet de logement</p>
         <div class="form-group">
+          <label for="chambre">Chambre souhaitée</label>
+          <select id="chambre" name="chambre">
+            <option value="" selected>Choisissez une chambre</option>
+            <option value="Chambre 1">Chambre 1</option>
+            <option value="Chambre 2">Chambre 2</option>
+            <option value="Chambre 3">Chambre 3</option>
+            <option value="Chambre 4">Chambre 4</option>
+            <option value="Chambre 5">Chambre 5</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label for="date_entree">Date d'entrée souhaitée *</label>
           <input type="date" id="date_entree" name="date_entree" required>
         </div>
@@ -921,7 +932,7 @@
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    if (window.chambreSelectionnee && !data.chambre) {
+    if (!data.chambre && window.chambreSelectionnee) {
       data.chambre = window.chambreSelectionnee;
     }
 
