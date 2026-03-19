@@ -121,7 +121,8 @@
   .chambre-photo-ph { width: 100%; height: 100%; background: linear-gradient(135deg, #E8E4DE, #D0CCC6); display: flex; align-items: center; justify-content: center; }
   .chambre-photo-ph span { font-size: 0.72rem; color: var(--gris); letter-spacing: 0.06em; text-transform: uppercase; }
   .chambre-badge { position: absolute; top: 12px; right: 12px; background: var(--blanc); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; color: var(--sauge); font-weight: 500; }
-  .chambre-badge-occup { background: #2C2C2A; color: rgba(255,255,255,0.7); }
+  .chambre-badge-dispo { background: var(--blanc); color: var(--sauge); }
+  .chambre-badge-occup { background: #2C2C2A; color: rgba(255,255,255,0.75); }
   .candidature-fermee { font-size: 0.72rem; color: var(--gris); font-style: italic; }
   .chambre-body { padding: 24px; }
   .chambre-num { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sauge); margin-bottom: 6px; display: block; }
@@ -312,14 +313,17 @@
       </div>
       <div class="hero-right fade-in" style="transition-delay:0.15s">
         <div class="hero-photo-main">
-          <img src="photos/salon.jpg" alt="Salon de la colocation Yakacoloc à Caen">
+          <!-- Remplacer par : <img src="photos/salon.jpg" alt="Salon de la colocation Yakacoloc à Caen"> -->
+          <div class="hero-photo-placeholder"><span>Photo · Salon / Pièce de vie</span></div>
         </div>
         <div class="hero-photos-row">
           <div class="hero-photo-sm">
-            <img src="photos/cuisine.jpg" alt="Cuisine équipée - Yakacoloc Caen">
+            <!-- <img src="photos/cuisine.jpg" alt="Cuisine équipée"> -->
+            <div class="photo-placeholder-sm"><span>Cuisine équipée</span></div>
           </div>
           <div class="hero-photo-sm">
-            <img src="photos/chambre1.jpg" alt="Chambre meublée - Yakacoloc Caen">
+            <!-- <img src="photos/chambre1.jpg" alt="Chambre meublée"> -->
+            <div class="photo-placeholder-sm"><span>Chambre meublée</span></div>
           </div>
         </div>
       </div>
@@ -332,7 +336,10 @@
   <div class="container">
     <div class="pres-grid">
       <div class="pres-photo fade-in">
-        <img src="photos/duplex.jpg" alt="Vue intérieure du duplex Yakacoloc à Caen">
+        <!-- <img src="photos/duplex.jpg" alt="Vue intérieure du duplex Yakacoloc"> -->
+        <div class="pres-photo-placeholder">
+          <span>Photo · Vue intérieure</span>
+        </div>
       </div>
       <div class="pres-text fade-in" style="transition-delay:0.1s">
         <span class="eyebrow">La colocation</span>
@@ -391,6 +398,13 @@
       </div>
       <div class="atout">
         <div class="atout-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <span class="atout-value">Charges</span>
+        <span class="atout-label">Tout inclus, fixe</span>
+      </div>
+      <div class="atout">
+        <div class="atout-icon">
           <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/><line x1="12" y1="12" x2="12" y2="16"/><circle cx="12" cy="12" r="1"/></svg>
         </div>
         <span class="atout-value">Machine</span>
@@ -402,13 +416,6 @@
         </div>
         <span class="atout-value">Bus &amp; commerces</span>
         <span class="atout-label">À proximité immédiate</span>
-      </div>
-      <div class="atout">
-        <div class="atout-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </div>
-        <span class="atout-value">Charges</span>
-        <span class="atout-label">Tout inclus, fixe</span>
       </div>
     </div>
   </div>
@@ -424,26 +431,27 @@
       </div>
       <p style="max-width:320px;font-size:0.9rem;">Toutes les chambres sont meublées et aménagées pour le confort du quotidien. Loyers de 380 € à 420 € + 80 € de charges.</p>
     </div>
-    <!-- Les chambres sont chargées dynamiquement via JavaScript (chambres.json) -->
     <div id="chambres-container">
       <div id="chambres-loading" style="text-align:center;padding:48px 0;color:var(--gris);font-size:0.9rem;letter-spacing:0.06em;">Chargement des chambres…</div>
     </div>
   </div>
 </section>
-
 <!-- ESPACES COMMUNS -->
 <section id="communs">
   <div class="container">
     <div class="communs-grid">
       <div class="communs-photos fade-in">
         <div class="commun-photo">
-          <img src="photos/salon.jpg" alt="Salon commun Yakacoloc Caen">
+          <!-- <img src="photos/salon.jpg" alt="Salon commun Yakacoloc"> -->
+          <div class="commun-photo-ph"><span>Photo · Salon</span></div>
         </div>
         <div class="commun-photo">
-          <img src="photos/cuisine2.jpg" alt="Cuisine Yakacoloc Caen">
+          <!-- <img src="photos/cuisine2.jpg" alt="Cuisine Yakacoloc"> -->
+          <div class="commun-photo-ph"><span>Photo · Cuisine</span></div>
         </div>
         <div class="commun-photo">
-          <img src="photos/espace_commun.jpg" alt="Espaces communs Yakacoloc Caen">
+          <!-- <img src="photos/espace_commun.jpg" alt="Espaces communs"> -->
+          <div class="commun-photo-ph"><span>Photo · Espace commun</span></div>
         </div>
       </div>
       <div class="communs-text fade-in" style="transition-delay:0.1s">
@@ -595,7 +603,7 @@
         <h2 style="margin-bottom:16px;">Postulez en quelques minutes.</h2>
         <p>Remplissez ce formulaire avec soin. Votre candidature sera étudiée rapidement et vous serez recontacté(e) par Armelle dans les meilleurs délais.</p>
       </div>
-      <form id="formCandidature" class="form-grid fade-in" action="#" method="POST" data-form="yakacoloc-candidature">
+      <form id="formCandidature" class="form-grid fade-in" action="#" method="POST" enctype="multipart/form-data" data-form="yakacoloc-candidature">
         <!-- Identité -->
         <p class="form-section-title">Vos informations personnelles</p>
         <div class="form-group">
@@ -699,9 +707,11 @@
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
   // ============================================================
-  // ANIMATIONS (Intersection Observer)
+  // ANIMATIONS — Intersection Observer
   // ============================================================
   function initObserver() {
     const fadeEls = document.querySelectorAll('.fade-in');
@@ -716,6 +726,7 @@
     fadeEls.forEach(el => observer.observe(el));
   }
 
+  // Hero visible dès le départ
   document.querySelectorAll('#hero .fade-in').forEach((el, i) => {
     setTimeout(() => el.classList.add('visible'), 100 + i * 150);
   });
@@ -749,32 +760,49 @@
   }
 
   // ============================================================
-  // CHARGEMENT DYNAMIQUE DES CHAMBRES
-  // Source : fichier chambres.json (ou URL Google Sheets CSV)
-  //
-  // Pour utiliser Google Sheets :
-  // 1. Créez un Google Sheet avec les colonnes définies ci-dessous
-  // 2. Fichier > Partager > Publier sur le web > Format CSV
-  // 3. Copiez l'URL et remplacez DATA_URL ci-dessous
-  // 4. Changez DATA_FORMAT en 'csv'
-  //
-  // Pour utiliser un fichier JSON local :
-  // 1. Éditez chambres.json dans le même dossier que index.html
-  // 2. DATA_URL = 'chambres.json' et DATA_FORMAT = 'json'
+  // CHARGEMENT DYNAMIQUE DES CHAMBRES (Google Sheets CSV)
   // ============================================================
-
   const DATA_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRRKT5qcI3DyDnKm6EJ7fXtGmYkwm3XoiZO0zPUoKP3DcrGtgF1QY8wooIqZ35eB46rPFnbzrDmD78g/pub?gid=1255358256&single=true&output=csv';
-  const DATA_FORMAT = 'csv'; // 'json' ou 'csv'
-
-  // Colonnes attendues : Chambre, Surface_m2, Loyer, Charges, Disponible, Candidature_ouverte, Description, Photo
+  const DATA_FORMAT = 'csv';
 
   function parseCSV(text) {
-    const lines = text.trim().split('\n');
-    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-    return lines.slice(1).map(line => {
-      const values = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+    const rows = [];
+    let current = '';
+    let row = [];
+    let inQuotes = false;
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      const nextChar = text[i + 1];
+      if (char === '"') {
+        if (inQuotes && nextChar === '"') {
+          current += '"';
+          i++;
+        } else {
+          inQuotes = !inQuotes;
+        }
+      } else if (char === ',' && !inQuotes) {
+        row.push(current);
+        current = '';
+      } else if ((char === '\n' || char === '\r') && !inQuotes) {
+        if (char === '\r' && nextChar === '\n') i++;
+        row.push(current);
+        rows.push(row);
+        row = [];
+        current = '';
+      } else {
+        current += char;
+      }
+    }
+    if (current.length > 0 || row.length > 0) {
+      row.push(current);
+      rows.push(row);
+    }
+    const headers = rows[0].map(h => h.trim().replace(/^"|"$/g, ''));
+    return rows.slice(1).filter(r => r.some(cell => cell.trim() !== '')).map(r => {
       const obj = {};
-      headers.forEach((h, i) => obj[h] = values[i] || '');
+      headers.forEach((h, i) => {
+        obj[h] = (r[i] || '').trim().replace(/^"|"$/g, '');
+      });
       return obj;
     });
   }
@@ -799,10 +827,6 @@
       ? `<button class="btn btn-sauge btn-sm btn-candidater" data-chambre="${c.Chambre}">Candidater</button>`
       : `<span class="candidature-fermee">Candidatures fermées</span>`;
 
-    const surfaceHtml = surfaceLabel
-      ? `<li>${surfaceLabel} — ${c.Description || ''}</li>`
-      : `<li>${c.Description || ''}</li>`;
-
     return `
       <div class="chambre-card">
         <div class="chambre-photo">
@@ -820,7 +844,7 @@
             <li>Rangements / penderie</li>
           </ul>
           <div class="chambre-footer">
-            <div class="chambre-prix">${c.Loyer || '—'} € <span>+ ${c.Charges || '60'} € charges</span></div>
+            <div class="chambre-prix">${c.Loyer || '—'} € <span>+ ${c.Charges || '80'} € charges</span></div>
             ${actionHtml}
           </div>
         </div>
@@ -833,44 +857,25 @@
       container.innerHTML = '<p style="text-align:center;color:var(--gris);">Aucune chambre disponible pour le moment.</p>';
       return;
     }
-
     const trois = chambres.slice(0, 3);
     const reste = chambres.slice(3);
-
     let html = `<div class="chambres-grid fade-in">`;
     trois.forEach((c, i) => { html += buildChambreCard(c, i); });
     html += `</div>`;
-
     if (reste.length > 0) {
       html += `<div class="chambres-last-row fade-in">`;
       reste.forEach((c, i) => { html += buildChambreCard(c, i + 3); });
       html += `</div>`;
     }
-
     container.innerHTML = html;
 
-    // Boutons Candidater → pré-remplir le formulaire
     container.querySelectorAll('.btn-candidater').forEach(btn => {
       btn.addEventListener('click', function() {
-        const chambre = this.getAttribute('data-chambre');
-        const selectChambre = document.getElementById('chambre_souhaitee');
-        if (selectChambre) {
-          // Mettre à jour le select si le champ existe
-          for (let opt of selectChambre.options) {
-            if (opt.value === chambre || opt.text === chambre) {
-              selectChambre.value = opt.value;
-              break;
-            }
-          }
-        }
-        // Mémoriser la chambre sélectionnée pour l'envoi
-        window.chambreSelectionnee = chambre;
-        // Scroll vers le formulaire
+        window.chambreSelectionnee = this.getAttribute('data-chambre');
         document.getElementById('candidature').scrollIntoView({ behavior: 'smooth' });
       });
     });
 
-    // Relancer les animations
     initObserver();
     container.querySelectorAll('.fade-in').forEach((el, i) => {
       setTimeout(() => el.classList.add('visible'), 100 + i * 80);
@@ -890,47 +895,72 @@
       }
       renderChambres(chambres);
     } catch (err) {
-      console.warn('Chargement JSON échoué, affichage des données par défaut.', err);
-      // Données de secours intégrées — modifiez-les ici si le fichier JSON est absent
+      console.warn('Chargement Google Sheets échoué, données de secours.', err);
       renderChambres([
-        { Chambre: "Chambre 1", Surface_m2: "10", Loyer: "340", Charges: "60", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre lumineuse, idéale pour le télétravail", Photo: "chambre1.jpg" },
-        { Chambre: "Chambre 2", Surface_m2: "12", Loyer: "355", Charges: "60", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre calme, belle luminosité naturelle", Photo: "chambre2.jpg" },
-        { Chambre: "Chambre 3", Surface_m2: "14", Loyer: "375", Charges: "60", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre spacieuse, espace de vie confortable", Photo: "chambre3.jpg" },
-        { Chambre: "Chambre 4", Surface_m2: "16", Loyer: "390", Charges: "60", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre en duplex, perspective dégagée et apaisante", Photo: "chambre4.jpg" },
-        { Chambre: "Chambre 5", Surface_m2: "20", Loyer: "410", Charges: "60", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre premium avec salle de bain privative", Photo: "chambre5.jpg" }
+        { Chambre: "Chambre 1", Surface_m2: "10", Loyer: "380", Charges: "80", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre lumineuse, idéale pour le télétravail", Photo: "chambre1.jpg" },
+        { Chambre: "Chambre 2", Surface_m2: "12", Loyer: "390", Charges: "80", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre calme, belle luminosité naturelle", Photo: "chambre2.jpg" },
+        { Chambre: "Chambre 3", Surface_m2: "14", Loyer: "400", Charges: "80", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre spacieuse, espace de vie confortable", Photo: "chambre3.jpg" },
+        { Chambre: "Chambre 4", Surface_m2: "16", Loyer: "410", Charges: "80", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre en duplex, perspective dégagée et apaisante", Photo: "chambre4.jpg" },
+        { Chambre: "Chambre 5", Surface_m2: "20", Loyer: "420", Charges: "80", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre premium avec salle de bain privative", Photo: "chambre5.jpg" }
       ]);
     }
   }
 
   // ============================================================
-  // FORMULAIRE DE CANDIDATURE
-  // Pour connecter à n8n / Make / Google Sheets :
-  // Décommentez le fetch() ci-dessous et remplacez l'URL webhook
+  // SUPABASE — Envoi du formulaire de candidature
   // ============================================================
-  document.getElementById('formCandidature').addEventListener('submit', function(e) {
+  const SUPABASE_URL = "https://tlorwxrlmnzwnavdirge.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_HEpuPHPZ59zkBMm8t5-JIQ_3QTG8530";
+
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  document.getElementById('formCandidature').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const formData = new FormData(this);
+
+    const form = this;
+    const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    // Ajouter la chambre sélectionnée depuis le clic "Candidater"
-    if (window.chambreSelectionnee && !data.chambre_souhaitee) {
-      data.chambre_souhaitee = window.chambreSelectionnee;
+    if (window.chambreSelectionnee && !data.chambre) {
+      data.chambre = window.chambreSelectionnee;
     }
 
-    // ---- Décommentez pour activer l'envoi vers votre webhook ----
-    // fetch('https://votre-webhook.n8n.cloud/webhook/yakacoloc', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(data)
-    // });
-    // -------------------------------------------------------------
+    const btn = form.querySelector('button[type=submit]');
+    const originalText = btn.textContent;
 
-    console.log('Candidature soumise :', data);
-    const btn = this.querySelector('button[type=submit]');
-    btn.textContent = '✓ Candidature envoyée — Merci !';
-    btn.style.background = 'var(--sauge)';
+    btn.textContent = 'Envoi en cours...';
     btn.disabled = true;
-    this.querySelectorAll('input,select,textarea').forEach(el => el.disabled = true);
+
+    try {
+      const { error } = await supabaseClient
+        .from('candidats')
+        .insert([{
+          prenom:            data.prenom            || null,
+          nom:               data.nom               || null,
+          email:             data.email             || null,
+          telephone:         data.telephone         || null,
+          statut:            data.statut            || null,
+          ecole_entreprise:  data.ecole_entreprise  || null,
+          revenu:            data.revenus           || null,
+          chambre:           data.chambre           || null,
+          date_entree:       data.date_entree       || null,
+          duree:             data.duree             || null,
+          message:           data.message           || null,
+          statut_dossier:    'nouveau'
+        }]);
+
+      if (error) throw error;
+
+      btn.textContent = '✓ Candidature envoyée — Merci !';
+      btn.style.background = 'var(--sauge)';
+      form.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = true);
+
+    } catch (err) {
+      console.error('Erreur Supabase :', err);
+      alert("Erreur lors de l'envoi de la candidature.");
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
   });
 
   // Lancement
