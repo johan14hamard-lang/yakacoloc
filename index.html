@@ -216,6 +216,8 @@
   select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A7875' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; cursor: pointer; }
   .form-submit { text-align: center; margin-top: 32px; }
   .form-note { font-size: 0.75rem; color: var(--gris); margin-top: 12px; }
+  input[type=file] { font-family: 'Jost', sans-serif; font-size: 0.85rem; font-weight: 300; color: var(--gris); background: var(--beige); border: 1px solid var(--beige-fonce); border-radius: var(--radius); padding: 10px 16px; width: 100%; cursor: pointer; }
+  input[type=file]:hover { border-color: var(--sauge); }
   .form-section-title { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--anthracite); grid-column: 1 / -1; margin-top: 16px; padding-top: 24px; border-top: 1px solid var(--beige-fonce); }
 
   /* CONTACT */
@@ -313,17 +315,14 @@
       </div>
       <div class="hero-right fade-in" style="transition-delay:0.15s">
         <div class="hero-photo-main">
-          <!-- Remplacer par : <img src="photos/salon.jpg" alt="Salon de la colocation Yakacoloc à Caen"> -->
-          <div class="hero-photo-placeholder"><span>Photo · Salon / Pièce de vie</span></div>
+          <img src="photos/salon.jpg" alt="Salon de la colocation Yakacoloc à Caen">
         </div>
         <div class="hero-photos-row">
           <div class="hero-photo-sm">
-            <!-- <img src="photos/cuisine.jpg" alt="Cuisine équipée"> -->
-            <div class="photo-placeholder-sm"><span>Cuisine équipée</span></div>
+            <img src="photos/cuisine.jpg" alt="Cuisine équipée — Yakacoloc Caen">
           </div>
           <div class="hero-photo-sm">
-            <!-- <img src="photos/chambre1.jpg" alt="Chambre meublée"> -->
-            <div class="photo-placeholder-sm"><span>Chambre meublée</span></div>
+            <img src="photos/chambre1.jpg" alt="Chambre meublée — Yakacoloc Caen">
           </div>
         </div>
       </div>
@@ -336,10 +335,7 @@
   <div class="container">
     <div class="pres-grid">
       <div class="pres-photo fade-in">
-        <!-- <img src="photos/duplex.jpg" alt="Vue intérieure du duplex Yakacoloc"> -->
-        <div class="pres-photo-placeholder">
-          <span>Photo · Vue intérieure</span>
-        </div>
+        <img src="photos/duplex.jpg" alt="Vue intérieure du duplex Yakacoloc à Caen">
       </div>
       <div class="pres-text fade-in" style="transition-delay:0.1s">
         <span class="eyebrow">La colocation</span>
@@ -442,16 +438,13 @@
     <div class="communs-grid">
       <div class="communs-photos fade-in">
         <div class="commun-photo">
-          <!-- <img src="photos/salon.jpg" alt="Salon commun Yakacoloc"> -->
-          <div class="commun-photo-ph"><span>Photo · Salon</span></div>
+          <img src="photos/salon.jpg" alt="Salon commun Yakacoloc Caen">
         </div>
         <div class="commun-photo">
-          <!-- <img src="photos/cuisine2.jpg" alt="Cuisine Yakacoloc"> -->
-          <div class="commun-photo-ph"><span>Photo · Cuisine</span></div>
+          <img src="photos/cuisine2.jpg" alt="Cuisine Yakacoloc Caen">
         </div>
         <div class="commun-photo">
-          <!-- <img src="photos/espace_commun.jpg" alt="Espaces communs"> -->
-          <div class="commun-photo-ph"><span>Photo · Espace commun</span></div>
+          <img src="photos/espace_commun.jpg" alt="Espaces communs Yakacoloc Caen">
         </div>
       </div>
       <div class="communs-text fade-in" style="transition-delay:0.1s">
@@ -684,6 +677,24 @@
         <div class="form-group full">
           <label for="message">Message libre</label>
           <textarea id="message" name="message" placeholder="Présentez-vous en quelques lignes, parlez de votre situation, de vos attentes..."></textarea>
+        </div>
+        <!-- Pièces justificatives -->
+        <p class="form-section-title">Pièces justificatives</p>
+        <div class="form-group full">
+          <label for="piece_identite">Pièce d'identité <span style="color:var(--gris);font-weight:300;text-transform:none;letter-spacing:0;">(carte d'identité, passeport)</span></label>
+          <input type="file" id="piece_identite" name="piece_identite" accept=".pdf,.jpg,.jpeg,.png">
+        </div>
+        <div class="form-group full">
+          <label for="justificatif_revenus">Justificatif de revenus <span style="color:var(--gris);font-weight:300;text-transform:none;letter-spacing:0;">(bulletin de salaire, bourse, etc.)</span></label>
+          <input type="file" id="justificatif_revenus" name="justificatif_revenus" accept=".pdf,.jpg,.jpeg,.png">
+        </div>
+        <div class="form-group full">
+          <label for="garant_ou_visale">Garant ou attestation Visale <span style="color:var(--gris);font-weight:300;text-transform:none;letter-spacing:0;">(acte de caution, attestation Visale)</span></label>
+          <input type="file" id="garant_ou_visale" name="garant_ou_visale" accept=".pdf,.jpg,.jpeg,.png">
+        </div>
+        <div class="form-group full">
+          <label for="justificatif_situation">Justificatif de situation <span style="color:var(--gris);font-weight:300;text-transform:none;letter-spacing:0;">(certificat de scolarité, contrat, etc.)</span></label>
+          <input type="file" id="justificatif_situation" name="justificatif_situation" accept=".pdf,.jpg,.jpeg,.png">
         </div>
         <div class="form-submit full">
           <button type="submit" class="btn btn-dark" style="padding:16px 48px;font-size:0.82rem;">Envoyer ma candidature</button>
@@ -943,32 +954,66 @@
     btn.disabled = true;
 
     try {
+      // Créer un identifiant de dossier unique
+      const timestamp = Date.now();
+      const nomSlug = (data.nom || 'inconnu').toLowerCase().replace(/[^a-z0-9]/g, '_');
+      const prenomSlug = (data.prenom || 'inconnu').toLowerCase().replace(/[^a-z0-9]/g, '_');
+      const dossier = `${timestamp}_${nomSlug}_${prenomSlug}`;
+
+      // Fonction d'upload d'un fichier vers Supabase Storage
+      async function uploadFichier(fieldName, nomFichier) {
+        const fileInput = form.querySelector(`input[name="${fieldName}"]`);
+        if (!fileInput || !fileInput.files || fileInput.files.length === 0) return null;
+        const file = fileInput.files[0];
+        const ext = file.name.split('.').pop().toLowerCase();
+        const chemin = `${dossier}/${nomFichier}.${ext}`;
+        const { error: uploadError } = await supabaseClient.storage
+          .from('candidatures')
+          .upload(chemin, file, { cacheControl: '3600', upsert: false });
+        if (uploadError) throw new Error(`Erreur upload ${fieldName} : ${uploadError.message}`);
+        const { data: urlData } = supabaseClient.storage
+          .from('candidatures')
+          .getPublicUrl(chemin);
+        return urlData.publicUrl || chemin;
+      }
+
+      // Upload des 4 documents (tous optionnels)
+      const piece_identite_url         = await uploadFichier('piece_identite',         'piece_identite');
+      const justificatif_revenus_url   = await uploadFichier('justificatif_revenus',   'justificatif_revenus');
+      const garant_ou_visale_url       = await uploadFichier('garant_ou_visale',       'garant_ou_visale');
+      const justificatif_situation_url = await uploadFichier('justificatif_situation', 'justificatif_situation');
+
+      // Insertion dans la table candidats
       const { error } = await supabaseClient
         .from('candidats')
         .insert([{
-          prenom:            data.prenom            || null,
-          nom:               data.nom               || null,
-          email:             data.email             || null,
-          telephone:         data.telephone         || null,
-          statut:            data.statut            || null,
-          ecole_entreprise:  data.ecole_entreprise  || null,
-          revenu:            data.revenus           || null,
-          chambre:           data.chambre           || null,
-          date_entree:       data.date_entree       || null,
-          duree:             data.duree             || null,
-          message:           data.message           || null,
-          statut_dossier:    'nouveau'
+          prenom:                      data.prenom               || null,
+          nom:                         data.nom                  || null,
+          email:                       data.email                || null,
+          telephone:                   data.telephone            || null,
+          statut:                      data.statut               || null,
+          ecole_entreprise:            data.ecole_entreprise     || null,
+          revenu:                      data.revenus              || null,
+          chambre:                     data.chambre              || null,
+          date_entree:                 data.date_entree          || null,
+          duree:                       data.duree                || null,
+          message:                     data.message              || null,
+          statut_dossier:              'nouveau',
+          piece_identite_url:          piece_identite_url,
+          justificatif_revenus_url:    justificatif_revenus_url,
+          garant_ou_visale_url:        garant_ou_visale_url,
+          justificatif_situation_url:  justificatif_situation_url
         }]);
 
       if (error) throw error;
 
-      btn.textContent = '✓ Candidature envoyée — Merci !';
+      btn.textContent = '\u2713 Candidature envoy\u00e9e \u2014 Merci\u00a0!';
       btn.style.background = 'var(--sauge)';
       form.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = true);
 
     } catch (err) {
-      console.error('Erreur Supabase :', err);
-      alert("Erreur lors de l'envoi de la candidature.");
+      console.error("Erreur lors de l'envoi :", err);
+      alert("Erreur lors de l'envoi de la candidature : " + err.message);
       btn.textContent = originalText;
       btn.disabled = false;
     }
