@@ -968,11 +968,11 @@
         const ext = file.name.split('.').pop().toLowerCase();
         const chemin = `${dossier}/${nomFichier}.${ext}`;
         const { error: uploadError } = await supabaseClient.storage
-          .from('candidatures')
+          .from('documents-candidats')
           .upload(chemin, file, { cacheControl: '3600', upsert: false });
         if (uploadError) throw new Error(`Erreur upload ${fieldName} : ${uploadError.message}`);
         const { data: urlData } = supabaseClient.storage
-          .from('candidatures')
+          .from('documents-candidats')
           .getPublicUrl(chemin);
         return urlData.publicUrl || chemin;
       }
