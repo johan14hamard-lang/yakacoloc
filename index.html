@@ -789,18 +789,13 @@ const SUPABASE_KEY = "sb_publishable_HEpuPHPZ59zkBMm8t5-JIQ_3QTG8530";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// =============================
-// CONFIG VALIDATION FICHIERS
-// =============================
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 Mo
-
 const ALLOWED_MIME_TYPES = [
   'application/pdf',
   'image/jpeg',
   'image/jpg',
   'image/png'
 ];
-
 const ALLOWED_EXTENSIONS = ['pdf', 'jpg', 'jpeg', 'png'];
 
 function validerFichier(file, labelChamp) {
@@ -809,7 +804,7 @@ function validerFichier(file, labelChamp) {
   const ext = file.name.split('.').pop().toLowerCase();
 
   if (!ALLOWED_EXTENSIONS.includes(ext)) {
-    throw new Error(`${labelChamp} : format non autorisé (PDF, JPG, PNG uniquement).`);
+    throw new Error(`${labelChamp} : format non autorisé (PDF, JPG, JPEG, PNG uniquement).`);
   }
 
   if (file.type && !ALLOWED_MIME_TYPES.includes(file.type)) {
@@ -821,9 +816,6 @@ function validerFichier(file, labelChamp) {
   }
 }
 
-// =============================
-// ENVOI FORMULAIRE
-// =============================
 document.getElementById('formCandidature').addEventListener('submit', async function(e) {
   e.preventDefault();
 
@@ -841,24 +833,51 @@ document.getElementById('formCandidature').addEventListener('submit', async func
   btn.textContent = 'Envoi en cours...';
   btn.disabled = true;
 
+  const uploadedPaths = [];
+
   try {
     const timestamp = Date.now();
     const nomSlug = (data.nom || 'inconnu').toLowerCase().replace(/[^a-z0-9]/g, '_');
     const prenomSlug = (data.prenom || 'inconnu').toLowerCase().replace(/[^a-z0-9]/g, '_');
     const dossier = `${timestamp}_${nomSlug}_${prenomSlug}`;
 
-    // =============================
-    // UPLOAD FICHIER
-    // =============================
+    const fichiersConfig = [
+      {
+        fieldName: 'piece_identite',
+        nomFichier: 'piece_identite',
+        labelChamp: "Pièce d'identité"
+      },
+      {
+        fieldName: 'justificatif_revenus',
+        nomFichier: 'justificatif_revenus',
+        labelChamp: 'Justificatif de revenus'
+      },
+      {
+        fieldName: 'garant_ou_visale',
+        nomFichier: 'garant_ou_visale',
+        labelChamp: 'Garant ou attestation Visale'
+      },
+      {
+        fieldName: 'justificatif_situation',
+        nomFichier: 'justificatif_situation',
+        labelChamp: 'Justificatif de situation'
+      }
+    ];
+
+    // 1) VALIDATION DE TOUS LES FICHIERS AVANT UPLOAD
+    for (const config of fichiersConfig) {
+      const fileInput = form.querySelector(`input[name="${config.fieldName}"]`);
+      if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        validerFichier(fileInput.files[0], config.labelChamp);
+      }
+    }
+
+    // 2) UPLOAD APRÈS VALIDATION GLOBALE
     async function uploadFichier(fieldName, nomFichier, labelChamp) {
       const fileInput = form.querySelector(`input[name="${fieldName}"]`);
       if (!fileInput || !fileInput.files || fileInput.files.length === 0) return null;
 
       const file = fileInput.files[0];
-
-      // VALIDATION
-      validerFichier(file, labelChamp);
-
       const ext = file.name.split('.').pop().toLowerCase();
       const chemin = `${dossier}/${nomFichier}_${nomSlug}_${prenomSlug}.${ext}`;
 
@@ -870,6 +889,8 @@ document.getElementById('formCandidature').addEventListener('submit', async func
         throw new Error(`Erreur upload ${labelChamp} : ${uploadError.message}`);
       }
 
+      uploadedPaths.push(chemin);
+
       const { data: urlData } = supabaseClient.storage
         .from('documents-candidats')
         .getPublicUrl(chemin);
@@ -877,9 +898,6 @@ document.getElementById('formCandidature').addEventListener('submit', async func
       return urlData.publicUrl || chemin;
     }
 
-    // =============================
-    // UPLOAD DES DOCUMENTS
-    // =============================
     const piece_identite_url = await uploadFichier(
       'piece_identite',
       'piece_identite',
@@ -904,9 +922,6 @@ document.getElementById('formCandidature').addEventListener('submit', async func
       'Justificatif de situation'
     );
 
-    // =============================
-    // INSERT DB
-    // =============================
     const { error } = await supabaseClient
       .from('candidats')
       .insert([{
@@ -922,21 +937,27 @@ document.getElementById('formCandidature').addEventListener('submit', async func
         duree: data.duree || null,
         message: data.message || null,
         statut_dossier: 'nouveau',
-        piece_identite_url: piece_identite_url,
-        justificatif_revenus_url: justificatif_revenus_url,
-        garant_ou_visale_url: garant_ou_visale_url,
-        justificatif_situation_url: justificatif_situation_url
+        piece_identite_url,
+        justificatif_revenus_url,
+        garant_ou_visale_url,
+        justificatif_situation_url
       }]);
 
     if (error) throw error;
 
     btn.textContent = '✓ Candidature envoyée — Merci !';
     btn.style.background = 'var(--sauge)';
-
     form.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = true);
 
   } catch (err) {
-    console.error(err);
+    // 3) SI ERREUR, SUPPRIMER LES FICHIERS DÉJÀ UPLOADÉS
+    if (uploadedPaths.length > 0) {
+      await supabaseClient.storage
+        .from('documents-candidats')
+        .remove(uploadedPaths);
+    }
+
+    console.error("Erreur lors de l'envoi :", err);
     alert(err.message);
     btn.textContent = originalText;
     btn.disabled = false;
