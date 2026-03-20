@@ -966,7 +966,7 @@
         if (!fileInput || !fileInput.files || fileInput.files.length === 0) return null;
         const file = fileInput.files[0];
         const ext = file.name.split('.').pop().toLowerCase();
-        const chemin = `${dossier}/${nomFichier}_${nomSlug}_${prenomSlug}.${ext}`;
+        const chemin = `${dossier}/${nomFichier}_${nomSlug}_${prenomSlug}_${timestamp}.${ext}`;
         const { error: uploadError } = await supabaseClient.storage
           .from('documents-candidats')
           .upload(chemin, file, { cacheControl: '3600', upsert: false });
