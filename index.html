@@ -784,241 +784,164 @@
   // ============================================================
   // CHARGEMENT DYNAMIQUE DES CHAMBRES (Google Sheets CSV)
   // ============================================================
-  const DATA_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRRKT5qcI3DyDnKm6EJ7fXtGmYkwm3XoiZO0zPUoKP3DcrGtgF1QY8wooIqZ35eB46rPFnbzrDmD78g/pub?gid=1255358256&single=true&output=csv';
-  const DATA_FORMAT = 'csv';
+const SUPABASE_URL = "https://tlorwxrlmnzwnavdirge.supabase.co";
+const SUPABASE_KEY = "sb_publishable_HEpuPHPZ59zkBMm8t5-JIQ_3QTG8530";
 
-  function parseCSV(text) {
-    const rows = [];
-    let current = '';
-    let row = [];
-    let inQuotes = false;
-    for (let i = 0; i < text.length; i++) {
-      const char = text[i];
-      const nextChar = text[i + 1];
-      if (char === '"') {
-        if (inQuotes && nextChar === '"') {
-          current += '"';
-          i++;
-        } else {
-          inQuotes = !inQuotes;
-        }
-      } else if (char === ',' && !inQuotes) {
-        row.push(current);
-        current = '';
-      } else if ((char === '\n' || char === '\r') && !inQuotes) {
-        if (char === '\r' && nextChar === '\n') i++;
-        row.push(current);
-        rows.push(row);
-        row = [];
-        current = '';
-      } else {
-        current += char;
-      }
-    }
-    if (current.length > 0 || row.length > 0) {
-      row.push(current);
-      rows.push(row);
-    }
-    const headers = rows[0].map(h => h.trim().replace(/^"|"$/g, ''));
-    return rows.slice(1).filter(r => r.some(cell => cell.trim() !== '')).map(r => {
-      const obj = {};
-      headers.forEach((h, i) => {
-        obj[h] = (r[i] || '').trim().replace(/^"|"$/g, '');
-      });
-      return obj;
-    });
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// =============================
+// CONFIG VALIDATION FICHIERS
+// =============================
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 Mo
+
+const ALLOWED_MIME_TYPES = [
+  'application/pdf',
+  'image/jpeg',
+  'image/jpg',
+  'image/png'
+];
+
+const ALLOWED_EXTENSIONS = ['pdf', 'jpg', 'jpeg', 'png'];
+
+function validerFichier(file, labelChamp) {
+  if (!file) return;
+
+  const ext = file.name.split('.').pop().toLowerCase();
+
+  if (!ALLOWED_EXTENSIONS.includes(ext)) {
+    throw new Error(`${labelChamp} : format non autorisé (PDF, JPG, PNG uniquement).`);
   }
 
-  function buildChambreCard(c, index) {
-    const numero = String(index + 1).padStart(2, '0');
-    const disponible = (c.Disponible || '').toLowerCase() === 'oui';
-    const candidatureOuverte = (c.Candidature_ouverte || '').toLowerCase() === 'oui';
-    const photo = c.Photo ? `photos/${c.Photo}` : '';
-    const surfaceLabel = c.Surface_m2 ? `${c.Surface_m2} m²` : '';
-
-    const badgeHtml = disponible
-      ? `<span class="chambre-badge chambre-badge-dispo">Disponible</span>`
-      : `<span class="chambre-badge chambre-badge-occup">Occupée</span>`;
-
-    const photoHtml = photo
-      ? `<img src="${photo}" alt="${c.Chambre} - Yakacoloc Caen" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-         <div class="chambre-photo-ph" style="display:none"><span>${c.Chambre} · Photo</span></div>`
-      : `<div class="chambre-photo-ph"><span>${c.Chambre} · Photo</span></div>`;
-
-    const actionHtml = candidatureOuverte
-      ? `<button class="btn btn-sauge btn-sm btn-candidater" data-chambre="${c.Chambre}">Candidater</button>`
-      : `<span class="candidature-fermee">Candidatures fermées</span>`;
-
-    return `
-      <div class="chambre-card">
-        <div class="chambre-photo">
-          ${photoHtml}
-          ${badgeHtml}
-        </div>
-        <div class="chambre-body">
-          <span class="chambre-num">Chambre ${numero}</span>
-          <div class="chambre-nom">${c.Chambre}</div>
-          <p class="chambre-desc">${c.Description || ''}</p>
-          <ul class="chambre-features">
-            ${surfaceLabel ? `<li>${surfaceLabel}</li>` : ''}
-            <li>Lit double (140 cm)</li>
-            <li>Bureau et chaise</li>
-            <li>Rangements / penderie</li>
-          </ul>
-          <div class="chambre-footer">
-            <div class="chambre-prix">${c.Loyer || '—'} € <span>+ ${c.Charges || '80'} € charges</span></div>
-            ${actionHtml}
-          </div>
-        </div>
-      </div>`;
+  if (file.type && !ALLOWED_MIME_TYPES.includes(file.type)) {
+    throw new Error(`${labelChamp} : type de fichier invalide.`);
   }
 
-  function renderChambres(chambres) {
-    const container = document.getElementById('chambres-container');
-    if (!chambres || chambres.length === 0) {
-      container.innerHTML = '<p style="text-align:center;color:var(--gris);">Aucune chambre disponible pour le moment.</p>';
-      return;
-    }
-    const trois = chambres.slice(0, 3);
-    const reste = chambres.slice(3);
-    let html = `<div class="chambres-grid fade-in">`;
-    trois.forEach((c, i) => { html += buildChambreCard(c, i); });
-    html += `</div>`;
-    if (reste.length > 0) {
-      html += `<div class="chambres-last-row fade-in">`;
-      reste.forEach((c, i) => { html += buildChambreCard(c, i + 3); });
-      html += `</div>`;
-    }
-    container.innerHTML = html;
+  if (file.size > MAX_FILE_SIZE) {
+    throw new Error(`${labelChamp} : fichier trop volumineux (max 5 Mo).`);
+  }
+}
 
-    container.querySelectorAll('.btn-candidater').forEach(btn => {
-      btn.addEventListener('click', function() {
-        window.chambreSelectionnee = this.getAttribute('data-chambre');
-        document.getElementById('candidature').scrollIntoView({ behavior: 'smooth' });
-      });
-    });
+// =============================
+// ENVOI FORMULAIRE
+// =============================
+document.getElementById('formCandidature').addEventListener('submit', async function(e) {
+  e.preventDefault();
 
-    initObserver();
-    container.querySelectorAll('.fade-in').forEach((el, i) => {
-      setTimeout(() => el.classList.add('visible'), 100 + i * 80);
-    });
+  const form = this;
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+
+  if (!data.chambre && window.chambreSelectionnee) {
+    data.chambre = window.chambreSelectionnee;
   }
 
-  async function loadChambres() {
-    try {
-      const res = await fetch(DATA_URL);
-      if (!res.ok) throw new Error('Fichier introuvable');
-      let chambres;
-      if (DATA_FORMAT === 'csv') {
-        const text = await res.text();
-        chambres = parseCSV(text);
-      } else {
-        chambres = await res.json();
-      }
-      renderChambres(chambres);
-    } catch (err) {
-      console.warn('Chargement Google Sheets échoué, données de secours.', err);
-      renderChambres([
-        { Chambre: "Chambre 1", Surface_m2: "10", Loyer: "380", Charges: "80", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre lumineuse, idéale pour le télétravail", Photo: "chambre1.jpg" },
-        { Chambre: "Chambre 2", Surface_m2: "12", Loyer: "390", Charges: "80", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre calme, belle luminosité naturelle", Photo: "chambre2.jpg" },
-        { Chambre: "Chambre 3", Surface_m2: "14", Loyer: "400", Charges: "80", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre spacieuse, espace de vie confortable", Photo: "chambre3.jpg" },
-        { Chambre: "Chambre 4", Surface_m2: "16", Loyer: "410", Charges: "80", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre en duplex, perspective dégagée et apaisante", Photo: "chambre4.jpg" },
-        { Chambre: "Chambre 5", Surface_m2: "20", Loyer: "420", Charges: "80", Disponible: "oui", Candidature_ouverte: "oui", Description: "Chambre premium avec salle de bain privative", Photo: "chambre5.jpg" }
-      ]);
-    }
-  }
+  const btn = form.querySelector('button[type=submit]');
+  const originalText = btn.textContent;
 
-  // ============================================================
-  // SUPABASE — Envoi du formulaire de candidature
-  // ============================================================
-  const SUPABASE_URL = "https://tlorwxrlmnzwnavdirge.supabase.co";
-  const SUPABASE_KEY = "sb_publishable_HEpuPHPZ59zkBMm8t5-JIQ_3QTG8530";
+  btn.textContent = 'Envoi en cours...';
+  btn.disabled = true;
 
-  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  try {
+    const timestamp = Date.now();
+    const nomSlug = (data.nom || 'inconnu').toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const prenomSlug = (data.prenom || 'inconnu').toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const dossier = `${timestamp}_${nomSlug}_${prenomSlug}`;
 
-  document.getElementById('formCandidature').addEventListener('submit', async function(e) {
-    e.preventDefault();
+    // =============================
+    // UPLOAD FICHIER
+    // =============================
+    async function uploadFichier(fieldName, nomFichier, labelChamp) {
+      const fileInput = form.querySelector(`input[name="${fieldName}"]`);
+      if (!fileInput || !fileInput.files || fileInput.files.length === 0) return null;
 
-    const form = this;
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+      const file = fileInput.files[0];
 
-    if (!data.chambre && window.chambreSelectionnee) {
-      data.chambre = window.chambreSelectionnee;
-    }
+      // VALIDATION
+      validerFichier(file, labelChamp);
 
-    const btn = form.querySelector('button[type=submit]');
-    const originalText = btn.textContent;
+      const ext = file.name.split('.').pop().toLowerCase();
+      const chemin = `${dossier}/${nomFichier}_${nomSlug}_${prenomSlug}.${ext}`;
 
-    btn.textContent = 'Envoi en cours...';
-    btn.disabled = true;
+      const { error: uploadError } = await supabaseClient.storage
+        .from('documents-candidats')
+        .upload(chemin, file, { cacheControl: '3600', upsert: false });
 
-    try {
-      // Créer un identifiant de dossier unique
-      const timestamp = Date.now();
-      const nomSlug = (data.nom || 'inconnu').toLowerCase().replace(/[^a-z0-9]/g, '_');
-      const prenomSlug = (data.prenom || 'inconnu').toLowerCase().replace(/[^a-z0-9]/g, '_');
-      const dossier = `${timestamp}_${nomSlug}_${prenomSlug}`;
-
-      // Fonction d'upload d'un fichier vers Supabase Storage
-      async function uploadFichier(fieldName, nomFichier) {
-        const fileInput = form.querySelector(`input[name="${fieldName}"]`);
-        if (!fileInput || !fileInput.files || fileInput.files.length === 0) return null;
-        const file = fileInput.files[0];
-        const ext = file.name.split('.').pop().toLowerCase();
-        const chemin = `${dossier}/${nomFichier}_${nomSlug}_${prenomSlug}_${timestamp}.${ext}`;
-        const { error: uploadError } = await supabaseClient.storage
-          .from('documents-candidats')
-          .upload(chemin, file, { cacheControl: '3600', upsert: false });
-        if (uploadError) throw new Error(`Erreur upload ${fieldName} : ${uploadError.message}`);
-        const { data: urlData } = supabaseClient.storage
-          .from('documents-candidats')
-          .getPublicUrl(chemin);
-        return urlData.publicUrl || chemin;
+      if (uploadError) {
+        throw new Error(`Erreur upload ${labelChamp} : ${uploadError.message}`);
       }
 
-      // Upload des 4 documents (tous optionnels)
-      const piece_identite_url         = await uploadFichier('piece_identite',         'piece_identite');
-      const justificatif_revenus_url   = await uploadFichier('justificatif_revenus',   'justificatif_revenus');
-      const garant_ou_visale_url       = await uploadFichier('garant_ou_visale',       'garant_ou_visale');
-      const justificatif_situation_url = await uploadFichier('justificatif_situation', 'justificatif_situation');
+      const { data: urlData } = supabaseClient.storage
+        .from('documents-candidats')
+        .getPublicUrl(chemin);
 
-      // Insertion dans la table candidats
-      const { error } = await supabaseClient
-        .from('candidats')
-        .insert([{
-          prenom:                      data.prenom               || null,
-          nom:                         data.nom                  || null,
-          email:                       data.email                || null,
-          telephone:                   data.telephone            || null,
-          statut:                      data.statut               || null,
-          ecole_entreprise:            data.ecole_entreprise     || null,
-          revenu:                      data.revenus              || null,
-          chambre:                     data.chambre              || null,
-          date_entree:                 data.date_entree          || null,
-          duree:                       data.duree                || null,
-          message:                     data.message              || null,
-          statut_dossier:              'nouveau',
-          piece_identite_url:          piece_identite_url,
-          justificatif_revenus_url:    justificatif_revenus_url,
-          garant_ou_visale_url:        garant_ou_visale_url,
-          justificatif_situation_url:  justificatif_situation_url
-        }]);
-
-      if (error) throw error;
-
-      btn.textContent = '\u2713 Candidature envoy\u00e9e \u2014 Merci\u00a0!';
-      btn.style.background = 'var(--sauge)';
-      form.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = true);
-
-    } catch (err) {
-      console.error("Erreur lors de l'envoi :", err);
-      alert("Erreur lors de l'envoi de la candidature : " + err.message);
-      btn.textContent = originalText;
-      btn.disabled = false;
+      return urlData.publicUrl || chemin;
     }
-  });
 
+    // =============================
+    // UPLOAD DES DOCUMENTS
+    // =============================
+    const piece_identite_url = await uploadFichier(
+      'piece_identite',
+      'piece_identite',
+      "Pièce d'identité"
+    );
+
+    const justificatif_revenus_url = await uploadFichier(
+      'justificatif_revenus',
+      'justificatif_revenus',
+      'Justificatif de revenus'
+    );
+
+    const garant_ou_visale_url = await uploadFichier(
+      'garant_ou_visale',
+      'garant_ou_visale',
+      'Garant ou attestation Visale'
+    );
+
+    const justificatif_situation_url = await uploadFichier(
+      'justificatif_situation',
+      'justificatif_situation',
+      'Justificatif de situation'
+    );
+
+    // =============================
+    // INSERT DB
+    // =============================
+    const { error } = await supabaseClient
+      .from('candidats')
+      .insert([{
+        prenom: data.prenom || null,
+        nom: data.nom || null,
+        email: data.email || null,
+        telephone: data.telephone || null,
+        statut: data.statut || null,
+        ecole_entreprise: data.ecole_entreprise || null,
+        revenu: data.revenus || null,
+        chambre: data.chambre || null,
+        date_entree: data.date_entree || null,
+        duree: data.duree || null,
+        message: data.message || null,
+        statut_dossier: 'nouveau',
+        piece_identite_url: piece_identite_url,
+        justificatif_revenus_url: justificatif_revenus_url,
+        garant_ou_visale_url: garant_ou_visale_url,
+        justificatif_situation_url: justificatif_situation_url
+      }]);
+
+    if (error) throw error;
+
+    btn.textContent = '✓ Candidature envoyée — Merci !';
+    btn.style.background = 'var(--sauge)';
+
+    form.querySelectorAll('input,select,textarea,button').forEach(el => el.disabled = true);
+
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+});
   // Lancement
   initObserver();
   loadChambres();
