@@ -784,58 +784,7 @@
   // ============================================================
   // CHARGEMENT DYNAMIQUE DES CHAMBRES (Google Sheets CSV)
   // ============================================================
-  // ============================================================
-  // ANIMATIONS — Intersection Observer
-  // ============================================================
-  function initObserver() {
-    const fadeEls = document.querySelectorAll('.fade-in');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    fadeEls.forEach(el => observer.observe(el));
-  }
 
-  // Hero visible dès le départ
-  document.querySelectorAll('#hero .fade-in').forEach((el, i) => {
-    setTimeout(() => el.classList.add('visible'), 100 + i * 150);
-  });
-
-  // ============================================================
-  // MENU MOBILE
-  // ============================================================
-  function toggleMenu() {
-    const links = document.querySelector('.nav-links');
-    const cta = document.querySelector('.nav-cta');
-    const isOpen = links.style.display === 'flex';
-    if (isOpen) {
-      links.style.display = '';
-      cta.style.display = '';
-    } else {
-      links.style.display = 'flex';
-      links.style.flexDirection = 'column';
-      links.style.position = 'absolute';
-      links.style.top = '64px';
-      links.style.left = '0';
-      links.style.right = '0';
-      links.style.background = 'var(--blanc)';
-      links.style.padding = '20px 32px';
-      links.style.borderBottom = '1px solid var(--beige-fonce)';
-      links.style.gap = '16px';
-      cta.style.display = 'block';
-      cta.style.position = 'absolute';
-      cta.style.top = '160px';
-      cta.style.left = '32px';
-    }
-  }
-
-  // ============================================================
-  // CHARGEMENT DYNAMIQUE DES CHAMBRES (Google Sheets CSV)
-  // ============================================================
   const DATA_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRRKT5qcI3DyDnKm6EJ7fXtGmYkwm3XoiZO0zPUoKP3DcrGtgF1QY8wooIqZ35eB46rPFnbzrDmD78g/pub?gid=1255358256&single=true&output=csv';
   const DATA_FORMAT = 'csv';
 
