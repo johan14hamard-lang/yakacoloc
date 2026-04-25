@@ -1362,20 +1362,29 @@
 
       const piece_identite_url        = await uploadFichier('piece_identite', 'piece_identite');
       const justificatif_situation_url = await uploadFichier('carte_situation', 'carte_situation');
-      const justificatif_revenus_url   = await uploadFichier('bulletins_salaire', 'bulletins_salaire')
-                                      || await uploadFichier('avis_imposition', 'avis_imposition');
+      const justificatif_revenus_url   = await uploadFichier('bulletins_salaire', 'bulletins_salaire');
+      const avis_imposition_url        = await uploadFichier('avis_imposition', 'avis_imposition');
+      const quittances_locataire_url   = await uploadFichier('quittances_loyer', 'quittances_loyer');
 
       let garant_ou_visale_url = null;
+      let docs_garant_json = null;
       if (data.type_garant === 'garant_physique') {
-        garant_ou_visale_url = await uploadFichier('garant_bulletins', 'garant_bulletins')
-                            || await uploadFichier('garant_identite', 'garant_identite');
-        await uploadFichier('garant_domicile', 'garant_domicile');
-        await uploadFichier('garant_imposition', 'garant_imposition');
-        await uploadFichier('garant_quittances', 'garant_quittances');
+        const g_identite   = await uploadFichier('garant_identite',   'garant_identite');
+        const g_domicile   = await uploadFichier('garant_domicile',   'garant_domicile');
+        const g_imposition = await uploadFichier('garant_imposition', 'garant_imposition');
+        const g_bulletins  = await uploadFichier('garant_bulletins',  'garant_bulletins');
+        const g_quittances = await uploadFichier('garant_quittances', 'garant_quittances');
+        garant_ou_visale_url = g_identite || g_bulletins;
+        docs_garant_json = JSON.stringify({
+          identite:   g_identite,
+          domicile:   g_domicile,
+          imposition: g_imposition,
+          bulletins:  g_bulletins,
+          quittances: g_quittances,
+        });
       } else if (data.type_garant === 'visale') {
         garant_ou_visale_url = await uploadFichier('attestation_visale', 'attestation_visale');
       }
-      await uploadFichier('quittances_loyer', 'quittances_loyer');
 
       const insertPayload = {
         prenom: data.prenom || null,
@@ -1390,10 +1399,14 @@
         duree: data.duree || null,
         message: data.message || null,
         statut_dossier: 'nouveau',
+        type_garant: data.type_garant || null,
         piece_identite_url,
+        justificatif_situation_url,
         justificatif_revenus_url,
+        avis_imposition_url,
+        quittances_locataire_url,
         garant_ou_visale_url,
-        justificatif_situation_url
+        docs_garant_json,
       };
 
       const { error } = await supabaseClient.from('candidats').insert([insertPayload]);
