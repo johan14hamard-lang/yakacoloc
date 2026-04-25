@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — Yakacoloc</title>
+<!-- SUPABASE : ajouter colonnes si absentes :
+  ALTER TABLE candidats ADD COLUMN IF NOT EXISTS type_garant TEXT;
+  ALTER TABLE candidats ADD COLUMN IF NOT EXISTS avis_imposition_url TEXT;
+  ALTER TABLE candidats ADD COLUMN IF NOT EXISTS quittances_locataire_url TEXT;
+  ALTER TABLE candidats ADD COLUMN IF NOT EXISTS docs_garant_json TEXT;
+  ALTER TABLE candidats ADD COLUMN IF NOT EXISTS notes TEXT;
+-->
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   /* ── Variables ─────────────────────────────────────────────── */
@@ -20,19 +27,12 @@
     --radius:      6px;
     --shadow:      0 2px 24px rgba(44,44,42,0.08);
     --shadow-lg:   0 8px 40px rgba(44,44,42,0.12);
-
-    /* Statuts */
-    --nouveau-bg:    #F0F0EE;
-    --nouveau-color: #5A5A58;
-    --rappeler-bg:   #FEF3E6;
-    --rappeler-color:#B06A00;
-    --retenu-bg:     #EEF4F1;
-    --retenu-color:  #2D7A5A;
-    --refuse-bg:     #FDECEA;
-    --refuse-color:  #B03030;
+    --nouveau-bg:    #F0F0EE; --nouveau-color: #5A5A58;
+    --rappeler-bg:   #FEF3E6; --rappeler-color: #B06A00;
+    --retenu-bg:     #EEF4F1; --retenu-color:   #2D7A5A;
+    --refuse-bg:     #FDECEA; --refuse-color:   #B03030;
   }
 
-  /* ── Reset & Base ──────────────────────────────────────────── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
@@ -47,429 +47,254 @@
 
   /* ── Accès refusé ──────────────────────────────────────────── */
   #access-denied {
-    display: none;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 16px;
-    background: var(--anthracite);
-    color: var(--blanc);
-    text-align: center;
+    display: none; min-height: 100vh; align-items: center;
+    justify-content: center; flex-direction: column; gap: 16px;
+    background: var(--anthracite); color: var(--blanc); text-align: center;
   }
-  #access-denied h1 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.4rem;
-    font-weight: 400;
-  }
+  #access-denied h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 400; }
   #access-denied p { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
 
-  /* ── Layout principal ──────────────────────────────────────── */
+  /* ── Layout ────────────────────────────────────────────────── */
   #app { display: none; flex-direction: column; min-height: 100vh; }
 
   /* ── Header ────────────────────────────────────────────────── */
   header {
-    background: var(--anthracite);
-    color: var(--blanc);
-    padding: 0 40px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 50;
+    background: var(--anthracite); color: var(--blanc);
+    padding: 0 40px; height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 50;
   }
-  .header-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.3rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-  }
+  .header-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 500; letter-spacing: 0.04em; }
   .header-logo span { color: var(--sauge); }
   .header-badge {
-    font-size: 0.65rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    background: rgba(122,158,142,0.25);
-    color: var(--sauge);
-    padding: 4px 12px;
-    border-radius: 100px;
-    border: 1px solid rgba(122,158,142,0.3);
+    font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+    background: rgba(122,158,142,0.25); color: var(--sauge);
+    padding: 4px 12px; border-radius: 100px; border: 1px solid rgba(122,158,142,0.3);
   }
-  .header-refresh {
-    background: none;
-    border: 1px solid rgba(255,255,255,0.15);
-    color: rgba(255,255,255,0.6);
-    padding: 6px 14px;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-family: 'Jost', sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+  .header-actions { display: flex; gap: 8px; align-items: center; }
+  .header-btn {
+    background: none; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.6);
+    padding: 6px 14px; border-radius: var(--radius); cursor: pointer;
+    font-family: 'Jost', sans-serif; font-size: 0.72rem; letter-spacing: 0.06em;
+    text-transform: uppercase; transition: all 0.2s;
+    display: flex; align-items: center; gap: 6px;
   }
-  .header-refresh:hover {
-    background: rgba(255,255,255,0.08);
-    color: var(--blanc);
-    border-color: rgba(255,255,255,0.3);
-  }
+  .header-btn:hover { background: rgba(255,255,255,0.08); color: var(--blanc); border-color: rgba(255,255,255,0.3); }
+  .header-btn-export { border-color: rgba(122,158,142,0.4); color: var(--sauge); }
+  .header-btn-export:hover { background: rgba(122,158,142,0.15); color: var(--sauge); }
 
-  /* ── Main content ──────────────────────────────────────────── */
+  /* ── Main ──────────────────────────────────────────────────── */
   main { padding: 32px 40px; flex: 1; }
 
   /* ── Stats bar ─────────────────────────────────────────────── */
-  .stats-bar {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 28px;
-    flex-wrap: wrap;
-  }
+  .stats-bar { display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
   .stat-card {
-    background: var(--blanc);
-    border-radius: var(--radius);
-    padding: 16px 24px;
-    border: 1px solid var(--beige-fonce);
-    flex: 1;
-    min-width: 120px;
+    background: var(--blanc); border-radius: var(--radius); padding: 16px 24px;
+    border: 1px solid var(--beige-fonce); flex: 1; min-width: 120px;
   }
-  .stat-value {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
-    font-weight: 500;
-    color: var(--anthracite);
-    line-height: 1;
-    display: block;
-  }
-  .stat-label {
-    font-size: 0.7rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--gris);
-    margin-top: 4px;
-    display: block;
-  }
-  .stat-card.stat-retenu .stat-value { color: var(--retenu-color); }
+  .stat-value { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 500; color: var(--anthracite); line-height: 1; display: block; }
+  .stat-label { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); margin-top: 4px; display: block; }
+  .stat-card.stat-retenu .stat-value  { color: var(--retenu-color); }
   .stat-card.stat-rappeler .stat-value { color: var(--rappeler-color); }
+  .stat-card.stat-incomplet .stat-value { color: var(--rappeler-color); }
 
   /* ── Toolbar ───────────────────────────────────────────────── */
-  .toolbar {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .toolbar-label {
-    font-size: 0.7rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gris);
-    white-space: nowrap;
-  }
+  .toolbar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+  .toolbar-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gris); white-space: nowrap; }
   .toolbar select {
-    font-family: 'Jost', sans-serif;
-    font-size: 0.82rem;
-    font-weight: 400;
-    color: var(--anthracite);
-    background: var(--blanc);
-    border: 1px solid var(--beige-fonce);
-    border-radius: var(--radius);
-    padding: 8px 32px 8px 12px;
-    appearance: none;
-    cursor: pointer;
-    outline: none;
-    transition: border-color 0.2s;
+    font-family: 'Jost', sans-serif; font-size: 0.82rem; font-weight: 400;
+    color: var(--anthracite); background: var(--blanc);
+    border: 1px solid var(--beige-fonce); border-radius: var(--radius);
+    padding: 8px 32px 8px 12px; appearance: none; cursor: pointer; outline: none; transition: border-color 0.2s;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A7875' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
+    background-repeat: no-repeat; background-position: right 10px center;
   }
   .toolbar select:hover, .toolbar select:focus { border-color: var(--sauge); }
   .toolbar-spacer { flex: 1; }
-  #candidatures-count {
-    font-size: 0.78rem;
-    color: var(--gris);
-    white-space: nowrap;
-  }
+  #candidatures-count { font-size: 0.78rem; color: var(--gris); white-space: nowrap; }
   #search-input {
-    font-family: 'Jost', sans-serif;
-    font-size: 0.82rem;
-    color: var(--anthracite);
-    background: var(--blanc);
-    border: 1px solid var(--beige-fonce);
-    border-radius: var(--radius);
-    padding: 8px 14px;
-    outline: none;
-    transition: border-color 0.2s;
-    width: 200px;
+    font-family: 'Jost', sans-serif; font-size: 0.82rem; color: var(--anthracite);
+    background: var(--blanc); border: 1px solid var(--beige-fonce); border-radius: var(--radius);
+    padding: 8px 14px; outline: none; transition: border-color 0.2s; width: 200px;
   }
   #search-input:focus { border-color: var(--sauge); }
   #search-input::placeholder { color: var(--gris-clair); }
 
   /* ── Table wrapper ─────────────────────────────────────────── */
-  .table-wrapper {
-    background: var(--blanc);
-    border-radius: 8px;
-    border: 1px solid var(--beige-fonce);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-  }
+  .table-wrapper { background: var(--blanc); border-radius: 8px; border: 1px solid var(--beige-fonce); overflow: hidden; box-shadow: var(--shadow); }
   .table-scroll { overflow-x: auto; }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.83rem;
-  }
-
-  thead {
-    background: var(--anthracite);
-    color: var(--blanc);
-  }
+  table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+  thead { background: var(--anthracite); color: var(--blanc); }
   thead th {
-    padding: 12px 16px;
-    text-align: left;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-weight: 500;
-    white-space: nowrap;
-  }
-  thead th:first-child { padding-left: 24px; }
-  thead th:last-child { padding-right: 24px; }
-
-  tbody tr {
-    border-bottom: 1px solid var(--beige-fonce);
+    padding: 12px 16px; text-align: left;
+    font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500;
+    white-space: nowrap; cursor: pointer; user-select: none;
     transition: background 0.15s;
   }
+  thead th:hover { background: rgba(255,255,255,0.08); }
+  thead th.sortable::after { content: ' ↕'; opacity: 0.4; font-size: 0.6rem; }
+  thead th.sort-asc::after  { content: ' ↑'; opacity: 1; }
+  thead th.sort-desc::after { content: ' ↓'; opacity: 1; }
+  thead th:first-child { padding-left: 24px; }
+  thead th:last-child  { padding-right: 24px; }
+  tbody tr { border-bottom: 1px solid var(--beige-fonce); transition: background 0.15s; }
   tbody tr:last-child { border-bottom: none; }
   tbody tr:hover { background: var(--beige); }
-  tbody td {
-    padding: 14px 16px;
-    vertical-align: middle;
+  tbody td { padding: 14px 16px; vertical-align: middle; color: var(--anthracite); }
+  tbody td:first-child { padding-left: 24px; }
+  tbody td:last-child  { padding-right: 24px; }
+
+  /* Colonnes */
+  .col-date  { color: var(--gris); font-size: 0.78rem; white-space: nowrap; }
+  .col-name  { font-weight: 500; font-size: 0.9rem; }
+  .col-name .prenom  { color: var(--gris); font-weight: 300; margin-left: 3px; }
+  .col-name .email-small { display: block; font-size: 0.72rem; color: var(--sauge); font-weight: 300; margin-top: 2px; }
+  .col-chambre { font-size: 0.75rem; letter-spacing: 0.05em; color: var(--gris); white-space: nowrap; }
+
+  /* Badge type garant */
+  .badge-garant {
+    display: inline-block; font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 100px; font-weight: 500; white-space: nowrap;
+  }
+  .badge-garant-physique { background: #EEF0F4; color: #4A5568; }
+  .badge-garant-visale   { background: var(--sauge-clair); color: var(--sauge); }
+
+  /* Actions rapides dans tableau */
+  .actions-cell { display: flex; gap: 6px; align-items: center; }
+  .btn-action-sm {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: var(--radius);
+    border: 1px solid var(--beige-fonce); background: var(--blanc);
+    font-size: 0.85rem; text-decoration: none; transition: all 0.15s;
     color: var(--anthracite);
   }
-  tbody td:first-child { padding-left: 24px; }
-  tbody td:last-child { padding-right: 24px; }
-
-  /* Colonnes spécifiques */
-  .col-date { color: var(--gris); font-size: 0.78rem; white-space: nowrap; }
-  .col-name {
-    font-weight: 500;
-    font-size: 0.9rem;
-  }
-  .col-name .prenom { color: var(--gris); font-weight: 300; margin-left: 3px; }
-  .col-phone { color: var(--gris); white-space: nowrap; font-size: 0.8rem; }
-  .col-phone a { color: inherit; text-decoration: none; }
-  .col-phone a:hover { color: var(--sauge); }
-  .col-chambre {
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    color: var(--gris);
-    white-space: nowrap;
-  }
+  .btn-action-sm:hover { border-color: var(--sauge); background: var(--sauge-clair); }
 
   /* ── Badge statut ──────────────────────────────────────────── */
   .badge-statut {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 3px 10px;
-    border-radius: 100px;
-    font-size: 0.68rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    font-weight: 500;
-    white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 10px; border-radius: 100px;
+    font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; white-space: nowrap;
   }
-  .badge-statut::before {
-    content: '';
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .badge-nouveau    { background: var(--nouveau-bg);   color: var(--nouveau-color); }
-  .badge-nouveau::before { background: var(--nouveau-color); }
-  .badge-a_rappeler { background: var(--rappeler-bg);  color: var(--rappeler-color); }
+  .badge-statut::before { content: ''; width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .badge-nouveau    { background: var(--nouveau-bg);  color: var(--nouveau-color); }
+  .badge-nouveau::before    { background: var(--nouveau-color); }
+  .badge-a_rappeler { background: var(--rappeler-bg); color: var(--rappeler-color); }
   .badge-a_rappeler::before { background: var(--rappeler-color); }
-  .badge-retenu     { background: var(--retenu-bg);    color: var(--retenu-color); }
-  .badge-retenu::before { background: var(--retenu-color); }
-  .badge-refuse     { background: var(--refuse-bg);    color: var(--refuse-color); }
-  .badge-refuse::before { background: var(--refuse-color); }
+  .badge-retenu     { background: var(--retenu-bg);   color: var(--retenu-color); }
+  .badge-retenu::before     { background: var(--retenu-color); }
+  .badge-refuse     { background: var(--refuse-bg);   color: var(--refuse-color); }
+  .badge-refuse::before     { background: var(--refuse-color); }
 
   /* ── Select statut inline ──────────────────────────────────── */
   .select-statut {
-    font-family: 'Jost', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 0.04em;
-    color: var(--anthracite);
-    background: var(--beige);
-    border: 1px solid var(--beige-fonce);
-    border-radius: var(--radius);
-    padding: 5px 28px 5px 10px;
-    appearance: none;
-    cursor: pointer;
-    outline: none;
+    font-family: 'Jost', sans-serif; font-size: 0.75rem; letter-spacing: 0.04em;
+    color: var(--anthracite); background: var(--beige);
+    border: 1px solid var(--beige-fonce); border-radius: var(--radius);
+    padding: 5px 28px 5px 10px; appearance: none; cursor: pointer; outline: none;
     transition: border-color 0.2s, background 0.2s;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237A7875' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 8px center;
-    min-width: 130px;
+    background-repeat: no-repeat; background-position: right 8px center; min-width: 130px;
   }
   .select-statut:hover { border-color: var(--sauge); }
   .select-statut:focus { border-color: var(--sauge); background: var(--blanc); }
   .select-statut.saving { opacity: 0.5; pointer-events: none; }
-  .select-statut.saved { border-color: var(--retenu-color); }
-  .select-statut.error { border-color: var(--refuse-color); }
+  .select-statut.saved  { border-color: var(--retenu-color); }
+  .select-statut.error  { border-color: var(--refuse-color); }
 
   /* ── Documents ─────────────────────────────────────────────── */
   .docs-cell { display: flex; flex-wrap: wrap; gap: 5px; }
   .doc-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    background: var(--sauge-clair);
-    color: var(--sauge);
-    font-size: 0.67rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    text-decoration: none;
-    font-weight: 500;
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 8px; border-radius: 4px;
+    background: var(--sauge-clair); color: var(--sauge);
+    font-size: 0.67rem; letter-spacing: 0.04em; text-transform: uppercase;
+    text-decoration: none; font-weight: 500;
     transition: background 0.15s, color 0.15s;
-    border: 1px solid rgba(122,158,142,0.2);
-    white-space: nowrap;
+    border: 1px solid rgba(122,158,142,0.2); white-space: nowrap;
   }
   .doc-link:hover { background: var(--sauge); color: #fff; }
   .doc-link svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2; }
   .doc-empty { color: var(--gris-clair); font-size: 0.75rem; font-style: italic; }
 
-  /* ── Détail (expand) ───────────────────────────────────────── */
+  /* ── Détail expand ─────────────────────────────────────────── */
   .btn-detail {
-    background: none;
-    border: 1px solid var(--beige-fonce);
-    color: var(--gris);
-    padding: 5px 12px;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-family: 'Jost', sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    transition: all 0.2s;
-    white-space: nowrap;
+    background: none; border: 1px solid var(--beige-fonce); color: var(--gris);
+    padding: 5px 12px; border-radius: var(--radius); cursor: pointer;
+    font-family: 'Jost', sans-serif; font-size: 0.72rem; letter-spacing: 0.06em;
+    text-transform: uppercase; transition: all 0.2s; white-space: nowrap;
   }
   .btn-detail:hover { border-color: var(--anthracite); color: var(--anthracite); background: var(--beige); }
 
-  /* ── Ligne de détail expandée ──────────────────────────────── */
   .detail-row { display: none; }
   .detail-row.open { display: table-row; }
-  .detail-panel {
-    background: var(--beige);
-    border-top: 1px solid var(--beige-fonce);
-    padding: 20px 24px;
+  .detail-panel { background: var(--beige); border-top: 1px solid var(--beige-fonce); padding: 20px 24px; }
+  .detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  .detail-field label { display: block; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gris); margin-bottom: 3px; font-weight: 500; }
+  .detail-field span  { font-size: 0.85rem; color: var(--anthracite); display: block; }
+  .detail-message { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--beige-fonce); }
+  .detail-message label { display: block; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gris); margin-bottom: 6px; font-weight: 500; }
+  .detail-message p { font-size: 0.85rem; color: var(--anthracite); line-height: 1.7; font-style: italic; background: var(--blanc); padding: 12px 16px; border-radius: var(--radius); border: 1px solid var(--beige-fonce); }
+
+  /* Actions rapides dans le détail */
+  .detail-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--beige-fonce); }
+  .btn-action {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: var(--radius);
+    font-family: 'Jost', sans-serif; font-size: 0.75rem; font-weight: 400;
+    letter-spacing: 0.04em; text-decoration: none; transition: all 0.2s; cursor: pointer;
+    border: 1px solid var(--beige-fonce); background: var(--blanc); color: var(--anthracite);
   }
-  .detail-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
+  .btn-action:hover { border-color: var(--sauge); background: var(--sauge-clair); color: var(--sauge); }
+  .btn-action.btn-whatsapp:hover { border-color: #25D366; background: #F0FDF4; color: #16A34A; }
+
+  /* Docs garant */
+  .detail-docs-section { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--beige-fonce); }
+  .detail-docs-section label { display: block; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gris); margin-bottom: 8px; font-weight: 500; }
+  .detail-docs-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* Notes privées */
+  .detail-notes { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--beige-fonce); }
+  .detail-notes label { display: block; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gris); margin-bottom: 6px; font-weight: 500; }
+  .detail-notes textarea {
+    font-family: 'Jost', sans-serif; font-size: 0.85rem; font-weight: 300;
+    color: var(--anthracite); background: var(--blanc);
+    border: 1px solid var(--beige-fonce); border-radius: var(--radius);
+    padding: 12px 14px; width: 100%; min-height: 80px; resize: vertical;
+    outline: none; transition: border-color 0.2s;
   }
-  .detail-field label {
-    display: block;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gris);
-    margin-bottom: 3px;
-    font-weight: 500;
-  }
-  .detail-field span {
-    font-size: 0.85rem;
-    color: var(--anthracite);
-    display: block;
-  }
-  .detail-message {
-    margin-top: 14px;
-    padding-top: 14px;
-    border-top: 1px solid var(--beige-fonce);
-  }
-  .detail-message label {
-    display: block;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gris);
-    margin-bottom: 6px;
-    font-weight: 500;
-  }
-  .detail-message p {
-    font-size: 0.85rem;
-    color: var(--anthracite);
-    line-height: 1.7;
-    font-style: italic;
-    background: var(--blanc);
-    padding: 12px 16px;
-    border-radius: var(--radius);
-    border: 1px solid var(--beige-fonce);
-  }
+  .detail-notes textarea:focus { border-color: var(--sauge); }
+  .note-saved-hint { font-size: 0.72rem; color: var(--sauge); margin-top: 4px; display: none; }
 
   /* ── États vides / loader ──────────────────────────────────── */
-  #loader {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 64px 0;
-    gap: 16px;
-    color: var(--gris);
-  }
-  .spinner {
-    width: 28px;
-    height: 28px;
-    border: 2px solid var(--beige-fonce);
-    border-top-color: var(--sauge);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-  }
+  #loader { display: none; flex-direction: column; align-items: center; justify-content: center; padding: 64px 0; gap: 16px; color: var(--gris); }
+  .spinner { width: 28px; height: 28px; border: 2px solid var(--beige-fonce); border-top-color: var(--sauge); border-radius: 50%; animation: spin 0.7s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  #empty-state { display: none; text-align: center; padding: 56px 0; color: var(--gris); font-style: italic; font-size: 0.9rem; }
 
-  #empty-state {
-    display: none;
-    text-align: center;
-    padding: 56px 0;
-    color: var(--gris);
-    font-style: italic;
-    font-size: 0.9rem;
-  }
-
-  /* ── Toast notification ────────────────────────────────────── */
+  /* ── Toast ─────────────────────────────────────────────────── */
   #toast {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    background: var(--anthracite);
-    color: var(--blanc);
-    padding: 12px 20px;
-    border-radius: var(--radius);
-    font-size: 0.82rem;
-    font-weight: 400;
-    box-shadow: var(--shadow-lg);
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.25s, transform 0.25s;
-    z-index: 100;
-    pointer-events: none;
-    max-width: 320px;
+    position: fixed; bottom: 28px; right: 28px;
+    background: var(--anthracite); color: var(--blanc);
+    padding: 12px 20px; border-radius: var(--radius); font-size: 0.82rem;
+    box-shadow: var(--shadow-lg); opacity: 0; transform: translateY(8px);
+    transition: opacity 0.25s, transform 0.25s; z-index: 100; pointer-events: none; max-width: 320px;
   }
   #toast.show { opacity: 1; transform: translateY(0); }
   #toast.success { border-left: 3px solid var(--sauge); }
   #toast.error   { border-left: 3px solid #B03030; }
+
+  /* ── Vue mobile cartes ─────────────────────────────────────── */
+  .cards-container { display: none; flex-direction: column; gap: 12px; }
+  .cand-card {
+    background: var(--blanc); border-radius: 8px; border: 1px solid var(--beige-fonce);
+    padding: 16px 20px; box-shadow: var(--shadow);
+  }
+  .cand-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .cand-card-name { font-weight: 500; font-size: 0.95rem; }
+  .cand-card-sub  { font-size: 0.78rem; color: var(--gris); margin-top: 2px; }
+  .cand-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--beige-fonce); }
+  .cand-card-actions { display: flex; gap: 8px; }
 
   /* ── Responsive ────────────────────────────────────────────── */
   @media (max-width: 768px) {
@@ -480,40 +305,43 @@
     .stat-card { padding: 12px 16px; }
     .toolbar { gap: 8px; }
     #search-input { width: 100%; }
-    thead th, tbody td { padding: 10px 10px; }
-    thead th:first-child, tbody td:first-child { padding-left: 14px; }
-    thead th:last-child, tbody td:last-child { padding-right: 14px; }
+    .table-wrapper { display: none; }
+    .cards-container { display: flex; }
+  }
+  @media (min-width: 769px) {
+    .cards-container { display: none !important; }
+    .table-wrapper { display: block !important; }
   }
 </style>
 </head>
 <body>
 
-<!-- Accès refusé -->
 <div id="access-denied">
   <h1>Accès refusé</h1>
   <p>Mot de passe incorrect. Rechargez la page pour réessayer.</p>
 </div>
 
-<!-- App principale -->
 <div id="app">
-
-  <!-- Header -->
   <header>
     <div class="header-logo">Yaka<span>coloc</span></div>
     <span class="header-badge">Administration</span>
-    <button class="header-refresh" onclick="chargerCandidatures()">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M23 4v6h-6"/><path d="M1 20v-6h6"/>
-        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-      </svg>
-      Actualiser
-    </button>
+    <div class="header-actions">
+      <button class="header-btn header-btn-export" onclick="exporterCSV()">
+        ↓ Exporter CSV
+      </button>
+      <button class="header-btn" onclick="chargerCandidatures()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 4v6h-6"/><path d="M1 20v-6h6"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+        Actualiser
+      </button>
+    </div>
   </header>
 
   <main>
-
     <!-- Stats bar -->
-    <div class="stats-bar" id="stats-bar">
+    <div class="stats-bar">
       <div class="stat-card">
         <span class="stat-value" id="stat-total">—</span>
         <span class="stat-label">Total</span>
@@ -530,12 +358,15 @@
         <span class="stat-value" id="stat-retenu">—</span>
         <span class="stat-label">Retenu</span>
       </div>
+      <div class="stat-card stat-incomplet">
+        <span class="stat-value" id="stat-incomplet">—</span>
+        <span class="stat-label">Dossiers incomplets</span>
+      </div>
     </div>
 
-    <!-- Toolbar filtres -->
+    <!-- Toolbar -->
     <div class="toolbar">
       <span class="toolbar-label">Filtres</span>
-
       <select id="filtre-chambre" onchange="filtrer()">
         <option value="">Toutes les chambres</option>
         <option value="Chambre 1">Chambre 1</option>
@@ -544,7 +375,6 @@
         <option value="Chambre 4">Chambre 4</option>
         <option value="Chambre 5">Chambre 5</option>
       </select>
-
       <select id="filtre-statut" onchange="filtrer()">
         <option value="">Tous les statuts</option>
         <option value="nouveau">Nouveau</option>
@@ -552,34 +382,30 @@
         <option value="retenu">Retenu</option>
         <option value="refuse">Refusé</option>
       </select>
-
       <input type="text" id="search-input" placeholder="Rechercher un nom, email…" oninput="filtrer()">
-
       <div class="toolbar-spacer"></div>
       <span id="candidatures-count"></span>
     </div>
 
-    <!-- Loader -->
     <div id="loader">
       <div class="spinner"></div>
       <span style="font-size:0.85rem;">Chargement des candidatures…</span>
     </div>
-
-    <!-- État vide -->
     <div id="empty-state">Aucune candidature ne correspond à ces critères.</div>
 
-    <!-- Tableau -->
+    <!-- Tableau desktop -->
     <div class="table-wrapper" id="table-wrapper" style="display:none;">
       <div class="table-scroll">
         <table>
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Candidat</th>
-              <th>Téléphone</th>
+              <th class="sortable" data-col="date" onclick="trierPar('date')">Date</th>
+              <th>Candidat + Email</th>
               <th>Chambre</th>
-              <th>Statut dossier</th>
+              <th>Garant</th>
+              <th class="sortable" data-col="statut" onclick="trierPar('statut')">Statut</th>
               <th>Documents</th>
+              <th>Actions</th>
               <th>Détail</th>
             </tr>
           </thead>
@@ -588,19 +414,15 @@
       </div>
     </div>
 
+    <!-- Vue cartes mobile -->
+    <div class="cards-container" id="cards-container"></div>
   </main>
 </div>
 
-<!-- Toast -->
 <div id="toast"></div>
 
-<!-- Supabase CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
-  // ============================================================
-  // PROTECTION PAR MOT DE PASSE
-  // ============================================================
   const MOT_DE_PASSE = 'titiadmin';
 
   function verifierAcces() {
@@ -613,55 +435,37 @@
     return true;
   }
 
-  // ============================================================
-  // SUPABASE
-  // ============================================================
   const SUPABASE_URL = 'https://tlorwxrlmnzwnavdirge.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_HEpuPHPZ59zkBMm8t5-JIQ_3QTG8530';
   let supabaseClient;
-  try {
-    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  } catch(e) {
-    console.error('Erreur init Supabase :', e);
-  }
+  try { supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY); }
+  catch(e) { console.error('Erreur init Supabase :', e); }
 
-  // ============================================================
-  // DONNÉES
-  // ============================================================
-  let toutesLesCandidatures = []; // données brutes depuis Supabase
-  let candidaturesFiltrees  = []; // données après filtres
+  let toutesLesCandidatures = [];
+  let candidaturesFiltrees  = [];
+  let sortCol = 'date';
+  let sortDir = 'desc';
 
-  // ============================================================
-  // CHARGEMENT
-  // ============================================================
+  // ── Chargement ──────────────────────────────────────────────
   async function chargerCandidatures() {
     afficherLoader(true);
     document.getElementById('table-wrapper').style.display = 'none';
-    document.getElementById('empty-state').style.display   = 'none';
-
+    document.getElementById('cards-container').innerHTML   = '';
+    document.getElementById('empty-state').style.display  = 'none';
     try {
       const { data, error } = await supabaseClient
-        .from('candidats')
-        .select('*')
-        .order('created_at', { ascending: false });
-
+        .from('candidats').select('*').order('created_at', { ascending: false });
       if (error) throw error;
-
       toutesLesCandidatures = data || [];
       mettreAJourStats(toutesLesCandidatures);
       filtrer();
-
     } catch(err) {
       console.error('Erreur chargement :', err);
       afficherToast('Erreur de chargement : ' + err.message, 'error');
-    } finally {
-      afficherLoader(false);
-    }
+    } finally { afficherLoader(false); }
   }
 
-  // ============================================================
-  // FILTRES
-  // ============================================================
+  // ── Filtres ──────────────────────────────────────────────────
   function filtrer() {
     const chambre = document.getElementById('filtre-chambre').value;
     const statut  = document.getElementById('filtre-statut').value;
@@ -671,98 +475,124 @@
       if (chambre && c.chambre !== chambre) return false;
       if (statut  && c.statut_dossier !== statut) return false;
       if (search) {
-        const haystack = [c.prenom, c.nom, c.email, c.telephone, c.ecole_entreprise]
+        const hay = [c.prenom, c.nom, c.email, c.telephone, c.ecole_entreprise]
           .filter(Boolean).join(' ').toLowerCase();
-        if (!haystack.includes(search)) return false;
+        if (!hay.includes(search)) return false;
       }
       return true;
     });
 
-    afficherTableau(candidaturesFiltrees);
-    const n = candidaturesFiltrees.length;
+    appliquerTri();
+  }
+
+  // ── Tri ──────────────────────────────────────────────────────
+  function trierPar(col) {
+    if (sortCol === col) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+    else { sortCol = col; sortDir = 'desc'; }
+    document.querySelectorAll('thead th.sortable').forEach(th => {
+      th.classList.remove('sort-asc', 'sort-desc');
+      if (th.dataset.col === sortCol) th.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    });
+    appliquerTri();
+  }
+
+  function appliquerTri() {
+    const liste = [...candidaturesFiltrees];
+    liste.sort((a, b) => {
+      let va, vb;
+      if (sortCol === 'date') {
+        va = new Date(a.created_at || 0).getTime();
+        vb = new Date(b.created_at || 0).getTime();
+      } else if (sortCol === 'statut') {
+        const ordre = { nouveau: 0, a_rappeler: 1, retenu: 2, refuse: 3 };
+        va = ordre[a.statut_dossier] ?? 99;
+        vb = ordre[b.statut_dossier] ?? 99;
+      }
+      return sortDir === 'asc' ? va - vb : vb - va;
+    });
+    afficherTableau(liste);
+    afficherCartes(liste);
+    const n = liste.length;
     document.getElementById('candidatures-count').textContent =
-      n === 0 ? 'Aucun résultat' :
-      n === 1 ? '1 candidature' :
-      `${n} candidatures`;
+      n === 0 ? 'Aucun résultat' : n === 1 ? '1 candidature' : `${n} candidatures`;
   }
 
-  // ============================================================
-  // STATISTIQUES
-  // ============================================================
+  // ── Stats ────────────────────────────────────────────────────
   function mettreAJourStats(data) {
-    const compter = (statut) => data.filter(c => c.statut_dossier === statut).length;
-    document.getElementById('stat-total').textContent    = data.length;
-    document.getElementById('stat-nouveau').textContent  = compter('nouveau');
-    document.getElementById('stat-rappeler').textContent = compter('a_rappeler');
-    document.getElementById('stat-retenu').textContent   = compter('retenu');
+    const compter = s => data.filter(c => c.statut_dossier === s).length;
+    document.getElementById('stat-total').textContent     = data.length;
+    document.getElementById('stat-nouveau').textContent   = compter('nouveau');
+    document.getElementById('stat-rappeler').textContent  = compter('a_rappeler');
+    document.getElementById('stat-retenu').textContent    = compter('retenu');
+    document.getElementById('stat-incomplet').textContent = data.filter(c => !c.piece_identite_url).length;
   }
 
-  // ============================================================
-  // RENDU TABLEAU
-  // ============================================================
+  // ── Tableau desktop ──────────────────────────────────────────
   function afficherTableau(liste) {
     const tbody   = document.getElementById('tbody');
     const wrapper = document.getElementById('table-wrapper');
     const empty   = document.getElementById('empty-state');
-
     tbody.innerHTML = '';
-
     if (!liste || liste.length === 0) {
       wrapper.style.display = 'none';
-      empty.style.display   = 'block';
+      if (window.innerWidth >= 769) empty.style.display = 'block';
       return;
     }
-
     wrapper.style.display = 'block';
     empty.style.display   = 'none';
 
     liste.forEach(c => {
-      // Ligne principale
+      const tel = c.telephone ? c.telephone.replace(/\s/g, '') : '';
+      const telIntl = tel.startsWith('0') ? '33' + tel.slice(1) : tel;
+
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td class="col-date">${formaterDate(c.created_at)}</td>
         <td class="col-name">
-          ${escaper(c.nom || '—')}
-          <span class="prenom">${escaper(c.prenom || '')}</span>
-        </td>
-        <td class="col-phone">
-          ${c.telephone
-            ? `<a href="tel:${c.telephone}">${escaper(c.telephone)}</a>`
-            : '<span style="color:var(--gris-clair)">—</span>'}
+          ${escaper(c.nom || '—')}<span class="prenom">${escaper(c.prenom || '')}</span>
+          ${c.email ? `<a href="mailto:${escaper(c.email)}" class="email-small">${escaper(c.email)}</a>` : ''}
         </td>
         <td class="col-chambre">${escaper(c.chambre || '—')}</td>
+        <td>${badgeGarant(c.type_garant)}</td>
         <td>${genererSelectStatut(c.id, c.statut_dossier)}</td>
         <td>${genererDocs(c)}</td>
         <td>
-          <button class="btn-detail" onclick="toggleDetail('${c.id}')">
-            Voir ↓
-          </button>
+          <div class="actions-cell">
+            ${tel ? `<a href="tel:+${telIntl}" class="btn-action-sm" title="Appeler">📞</a>` : ''}
+            ${tel ? `<a href="https://wa.me/${telIntl}" target="_blank" rel="noopener" class="btn-action-sm" title="WhatsApp">💬</a>` : ''}
+            ${c.email ? `<a href="mailto:${escaper(c.email)}" class="btn-action-sm" title="Email">📧</a>` : ''}
+          </div>
         </td>
+        <td><button class="btn-detail" onclick="toggleDetail('${c.id}')">Voir ↓</button></td>
       `;
       tbody.appendChild(tr);
 
-      // Ligne de détail (cachée par défaut)
       const trDetail = document.createElement('tr');
       trDetail.classList.add('detail-row');
       trDetail.id = `detail-${c.id}`;
       trDetail.innerHTML = `
-        <td colspan="7" style="padding:0;">
+        <td colspan="8" style="padding:0;">
           <div class="detail-panel">
             <div class="detail-grid">
-              ${champ('Email', c.email ? `<a href="mailto:${escaper(c.email)}" style="color:var(--sauge)">${escaper(c.email)}</a>` : '—')}
               ${champ('Statut', escaper(c.statut || '—'))}
               ${champ('École / Entreprise', escaper(c.ecole_entreprise || '—'))}
               ${champ('Revenus', c.revenu ? escaper(c.revenu) + ' €' : '—')}
-              ${champ('Garant', escaper(c.garant || '—'))}
+              ${champ('Type de garant', escaper(c.type_garant || '—'))}
               ${champ('Date d\'entrée', c.date_entree ? formaterDateSimple(c.date_entree) : '—')}
               ${champ('Durée', escaper(tradDuree(c.duree)))}
-              ${champ('Chambre souhaitée', escaper(c.chambre || '—'))}
             </div>
-            ${c.message ? `
-              <div class="detail-message">
-                <label>Message</label>
-                <p>${escaper(c.message)}</p>
-              </div>` : ''}
+            ${c.message ? `<div class="detail-message"><label>Message</label><p>${escaper(c.message)}</p></div>` : ''}
+            ${genererDocsGarant(c)}
+            <div class="detail-actions">
+              ${tel ? `<a href="tel:+${telIntl}" class="btn-action">📞 Appeler</a>` : ''}
+              ${tel ? `<a href="https://wa.me/${telIntl}" target="_blank" rel="noopener" class="btn-action btn-whatsapp">💬 WhatsApp</a>` : ''}
+              ${c.email ? `<a href="mailto:${escaper(c.email)}" class="btn-action">📧 Email</a>` : ''}
+            </div>
+            <div class="detail-notes">
+              <label>Notes privées</label>
+              <textarea id="notes-${c.id}" placeholder="Après appel le … — impression : …" onblur="sauvegarderNote('${c.id}', this.value)">${escaper(c.notes || '')}</textarea>
+              <div class="note-saved-hint" id="note-hint-${c.id}">✓ Sauvegardé</div>
+            </div>
           </div>
         </td>
       `;
@@ -770,13 +600,72 @@
     });
   }
 
-  // ── Helpers de rendu ──────────────────────────────────────── */
+  // ── Vue cartes mobile ────────────────────────────────────────
+  function afficherCartes(liste) {
+    const container = document.getElementById('cards-container');
+    const empty     = document.getElementById('empty-state');
+    container.innerHTML = '';
+    if (!liste || liste.length === 0) {
+      if (window.innerWidth < 769) empty.style.display = 'block';
+      return;
+    }
+    empty.style.display = 'none';
 
+    liste.forEach(c => {
+      const tel = c.telephone ? c.telephone.replace(/\s/g, '') : '';
+      const telIntl = tel.startsWith('0') ? '33' + tel.slice(1) : tel;
+      const card = document.createElement('div');
+      card.className = 'cand-card';
+      card.innerHTML = `
+        <div class="cand-card-header">
+          <div>
+            <div class="cand-card-name">${escaper(c.nom || '')} ${escaper(c.prenom || '')}</div>
+            <div class="cand-card-sub">${escaper(c.chambre || '—')} · ${escaper(c.statut || '—')} · ${badgeGarant(c.type_garant)}</div>
+            ${c.telephone ? `<div class="cand-card-sub">${escaper(c.telephone)}</div>` : ''}
+          </div>
+          <span class="badge-statut badge-${c.statut_dossier || 'nouveau'}">${statutLabel(c.statut_dossier)}</span>
+        </div>
+        <div class="cand-card-footer">
+          <div class="cand-card-actions">
+            ${tel ? `<a href="tel:+${telIntl}" class="btn-action-sm">📞</a>` : ''}
+            ${tel ? `<a href="https://wa.me/${telIntl}" target="_blank" rel="noopener" class="btn-action-sm">💬</a>` : ''}
+            ${c.email ? `<a href="mailto:${escaper(c.email)}" class="btn-action-sm">📧</a>` : ''}
+          </div>
+          <button class="btn-detail" onclick="ouvrirCarteDetail('${c.id}')">Voir dossier ↓</button>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function ouvrirCarteDetail(id) {
+    const c = toutesLesCandidatures.find(x => x.id == id);
+    if (!c) return;
+    const info = [
+      `Chambre : ${c.chambre || '—'}`,
+      `Statut : ${c.statut || '—'}`,
+      `Revenus : ${c.revenu ? c.revenu + ' €' : '—'}`,
+      `Garant : ${c.type_garant || '—'}`,
+      `Entrée : ${c.date_entree ? formaterDateSimple(c.date_entree) : '—'}`,
+      c.message ? `\nMessage : ${c.message}` : '',
+    ].filter(Boolean).join('\n');
+    alert(info);
+  }
+
+  // ── Helpers ──────────────────────────────────────────────────
   function champ(label, valeur) {
-    return `<div class="detail-field">
-      <label>${label}</label>
-      <span>${valeur}</span>
-    </div>`;
+    return `<div class="detail-field"><label>${label}</label><span>${valeur}</span></div>`;
+  }
+
+  function badgeGarant(type) {
+    if (!type) return '<span style="color:var(--gris-clair);font-size:0.75rem;">—</span>';
+    const isVisale = type.toLowerCase().includes('visale');
+    return `<span class="badge-garant ${isVisale ? 'badge-garant-visale' : 'badge-garant-physique'}">${isVisale ? 'Visale' : 'Physique'}</span>`;
+  }
+
+  function statutLabel(s) {
+    const map = { nouveau: 'Nouveau', a_rappeler: 'À rappeler', retenu: 'Retenu', refuse: 'Refusé' };
+    return map[s] || s || '—';
   }
 
   function genererSelectStatut(id, statutActuel) {
@@ -786,79 +675,111 @@
       { value: 'retenu',     label: 'Retenu' },
       { value: 'refuse',     label: 'Refusé' },
     ];
-    const options = statuts.map(s =>
+    const opts = statuts.map(s =>
       `<option value="${s.value}" ${s.value === statutActuel ? 'selected' : ''}>${s.label}</option>`
     ).join('');
-    return `<select class="select-statut" id="sel-${id}" onchange="mettreAJourStatut('${id}', this)">${options}</select>`;
+    return `<select class="select-statut" id="sel-${id}" onchange="mettreAJourStatut('${id}', this)">${opts}</select>`;
   }
 
   function genererDocs(c) {
     const docs = [
       { url: c.piece_identite_url,         label: 'CNI' },
-      { url: c.justificatif_revenus_url,   label: 'Revenus' },
-      { url: c.garant_ou_visale_url,       label: 'Garant' },
       { url: c.justificatif_situation_url, label: 'Situation' },
+      { url: c.justificatif_revenus_url,   label: 'Revenus' },
+      { url: c.avis_imposition_url,        label: 'Imposition' },
+      { url: c.quittances_locataire_url,   label: 'Quittances' },
+      { url: c.garant_ou_visale_url,       label: 'Garant/Visale' },
     ];
-    const liens = docs
-      .filter(d => d.url)
-      .map(d => `
-        <a href="${escaper(d.url)}" target="_blank" rel="noopener" class="doc-link">
-          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-          ${d.label}
-        </a>`)
-      .join('');
-
-    return liens
-      ? `<div class="docs-cell">${liens}</div>`
-      : `<span class="doc-empty">Aucun</span>`;
+    const liens = docs.filter(d => d.url).map(d => `
+      <a href="${escaper(d.url)}" target="_blank" rel="noopener" class="doc-link">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        ${d.label}
+      </a>`).join('');
+    return liens ? `<div class="docs-cell">${liens}</div>` : `<span class="doc-empty">Aucun</span>`;
   }
 
-  // ============================================================
-  // MISE À JOUR STATUT
-  // ============================================================
+  function genererDocsGarant(c) {
+    const liens = [];
+    if (c.garant_ou_visale_url) liens.push({ url: c.garant_ou_visale_url, label: 'Garant / Visale' });
+    if (c.docs_garant_json) {
+      try {
+        const parsed = JSON.parse(c.docs_garant_json);
+        const labels = { identite: 'Identité garant', domicile: 'Domicile garant', imposition: 'Imposition garant', bulletins: 'Bulletins garant', quittances: 'Quittances garant' };
+        Object.entries(parsed).forEach(([k, v]) => { if (v) liens.push({ url: v, label: labels[k] || k }); });
+      } catch(e) {}
+    }
+    if (!liens.length) return '';
+    const linksHtml = liens.map(d => `
+      <a href="${escaper(d.url)}" target="_blank" rel="noopener" class="doc-link">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        ${d.label}
+      </a>`).join('');
+    return `<div class="detail-docs-section"><label>Documents garant</label><div class="detail-docs-grid">${linksHtml}</div></div>`;
+  }
+
+  // ── Mise à jour statut ───────────────────────────────────────
   async function mettreAJourStatut(id, selectEl) {
     const nouveauStatut = selectEl.value;
     selectEl.classList.add('saving');
     selectEl.classList.remove('saved', 'error');
-
     try {
-      const { error } = await supabaseClient
-        .from('candidats')
-        .update({ statut_dossier: nouveauStatut })
-        .eq('id', id);
-
+      const { error } = await supabaseClient.from('candidats').update({ statut_dossier: nouveauStatut }).eq('id', id);
       if (error) throw error;
-
-      // Mettre à jour localement
       const idx = toutesLesCandidatures.findIndex(c => c.id === id);
       if (idx !== -1) toutesLesCandidatures[idx].statut_dossier = nouveauStatut;
       mettreAJourStats(toutesLesCandidatures);
-
       selectEl.classList.add('saved');
       setTimeout(() => selectEl.classList.remove('saved'), 2000);
       afficherToast('Statut mis à jour', 'success');
-
     } catch(err) {
-      console.error('Erreur mise à jour :', err);
       selectEl.classList.add('error');
       afficherToast('Erreur : ' + err.message, 'error');
-    } finally {
-      selectEl.classList.remove('saving');
+    } finally { selectEl.classList.remove('saving'); }
+  }
+
+  // ── Notes ────────────────────────────────────────────────────
+  async function sauvegarderNote(id, texte) {
+    try {
+      const { error } = await supabaseClient.from('candidats').update({ notes: texte }).eq('id', id);
+      if (error) throw error;
+      const idx = toutesLesCandidatures.findIndex(c => c.id === id);
+      if (idx !== -1) toutesLesCandidatures[idx].notes = texte;
+      const hint = document.getElementById(`note-hint-${id}`);
+      if (hint) { hint.style.display = 'block'; setTimeout(() => hint.style.display = 'none', 2000); }
+    } catch(err) {
+      afficherToast('Erreur sauvegarde note : ' + err.message, 'error');
     }
   }
 
-  // ============================================================
-  // DÉTAIL EXPAND/COLLAPSE
-  // ============================================================
+  // ── Export CSV ───────────────────────────────────────────────
+  function exporterCSV() {
+    const lignes = [
+      ['Date','Nom','Prénom','Email','Téléphone','Chambre','Statut','Garant','Revenus'],
+      ...candidaturesFiltrees.map(c => [
+        formaterDate(c.created_at), c.nom, c.prenom, c.email,
+        c.telephone, c.chambre, c.statut_dossier, c.type_garant, c.revenu
+      ])
+    ];
+    const csv = lignes.map(r => r.map(v => `"${(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `candidatures-yakacoloc-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    afficherToast('CSV exporté', 'success');
+  }
+
+  // ── Détail expand ────────────────────────────────────────────
   function toggleDetail(id) {
     const row = document.getElementById(`detail-${id}`);
-    const btn = row.previousElementSibling.querySelector('.btn-detail');
     if (!row) return;
+    const btn = row.previousElementSibling.querySelector('.btn-detail');
     const isOpen = row.classList.contains('open');
-    // Fermer tous
     document.querySelectorAll('.detail-row.open').forEach(r => {
       r.classList.remove('open');
-      const b = r.previousElementSibling.querySelector('.btn-detail');
+      const b = r.previousElementSibling?.querySelector('.btn-detail');
       if (b) b.textContent = 'Voir ↓';
     });
     if (!isOpen) {
@@ -867,12 +788,8 @@
     }
   }
 
-  // ============================================================
-  // UI HELPERS
-  // ============================================================
-  function afficherLoader(visible) {
-    document.getElementById('loader').style.display = visible ? 'flex' : 'none';
-  }
+  // ── UI helpers ───────────────────────────────────────────────
+  function afficherLoader(v) { document.getElementById('loader').style.display = v ? 'flex' : 'none'; }
 
   let toastTimer;
   function afficherToast(message, type = 'success') {
@@ -883,45 +800,29 @@
     toastTimer = setTimeout(() => { toast.className = ''; }, 3000);
   }
 
-  // ============================================================
-  // FORMATAGE
-  // ============================================================
+  // ── Formatage ────────────────────────────────────────────────
   function formaterDate(iso) {
     if (!iso) return '—';
     const d = new Date(iso);
-    return d.toLocaleDateString('fr-FR', {
-      day: '2-digit', month: '2-digit', year: '2-digit',
-    }) + ' ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+    return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' })
+      + ' ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
   }
-
   function formaterDateSimple(iso) {
     if (!iso) return '—';
-    const d = new Date(iso + 'T00:00:00');
-    return d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    return new Date(iso + 'T00:00:00').toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
   }
-
   function tradDuree(val) {
-    const map = { '3_mois': '3 mois', '6_mois': '6 mois', '1_an': '1 an', 'plus': 'Plus d\'1 an', 'indetermine': 'Non déterminée' };
+    const map = { '3_mois': '3 mois', '6_mois': '6 mois', '9_mois': '9 mois', '1_an': '1 an', 'plus': 'Plus d\'1 an', 'indetermine': 'Non déterminée' };
     return map[val] || val || '—';
   }
-
   function escaper(str) {
     if (!str) return '';
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 
-  // ============================================================
-  // INITIALISATION
-  // ============================================================
+  // ── Init ─────────────────────────────────────────────────────
   window.addEventListener('DOMContentLoaded', () => {
-    if (verifierAcces()) {
-      chargerCandidatures();
-    }
+    if (verifierAcces()) chargerCandidatures();
   });
 </script>
 </body>
